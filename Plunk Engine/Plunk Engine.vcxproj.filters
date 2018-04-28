@@ -28,6 +28,9 @@
     <ClInclude Include="IComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
