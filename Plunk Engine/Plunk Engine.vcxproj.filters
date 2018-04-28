@@ -25,6 +25,9 @@
     <ClInclude Include="targetver.h">
       <Filter>Entry point</Filter>
     </ClInclude>
+    <ClInclude Include="IComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
