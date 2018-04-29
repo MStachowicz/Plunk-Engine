@@ -1,6 +1,7 @@
 #ifndef ICOMPONENT_H
 #define ICOMPONENT_H
 
+// 
 class IComponent
 {
 public:
@@ -14,15 +15,10 @@ public:
 		COMPONENT_SHADOW_CASTER = 1 << 6,				// 0000 0000 0000 0100 0000			64
 	};
 
-	IComponent(ComponentFlags componentType) : componentType(componentType)
-	{}
-	~IComponent()
-	{}
+	IComponent(ComponentFlags& componentType);
+	~IComponent();
 
-	ComponentFlags GetComponentType()
-	{
-		return componentType;
-	}
+	ComponentFlags GetComponentType();
 
 private:
 	ComponentFlags componentType;
