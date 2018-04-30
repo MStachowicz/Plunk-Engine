@@ -19,9 +19,9 @@ public:
 
 	Entity(std::string name);
 	~Entity();
-	std::shared_ptr<IComponent> FindComponent(int pComponentValue) const;
+	std::shared_ptr<IComponent> FindComponent(int pComponentValue) const; 
 
-	template <typename CompType>
+	template <typename CompType> 
 	void AddComponent(CompType& pComponent) // Adds a single component to the entity and updates the mask.
 	{
 		componentList.push_back(std::make_shared<CompType>(pComponent));

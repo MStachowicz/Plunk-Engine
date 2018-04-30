@@ -1,26 +1,35 @@
 #ifndef ICOMPONENT_H
 #define ICOMPONENT_H
 
-// 
+// #include <bitset> try bitset instead of enum if enum masking isnt working
+
 class IComponent
 {
 public:
 	enum ComponentFlags {								// BITS								// VAL			
 		COMPONENT_NONE = 0,								// 0000 0000 0000 0000 0000			0
-		COMPONENT_RIGID_BODY = 1 << 1,					// 0000 0000 0000 0000 0010			2
-		COMPONENT_COLLIDABLE = 1 << 2,					// 0000 0000 0000 0000 0100			4	
-		COMPONENT_DIRECTIONAL_LIGHT = 1 << 3,			// 0000 0000 0000 0000 1000			8
-		COMPONENT_SPOTLIGHT = 1 << 4,					// 0000 0000 0000 0001 0000			16
-		COMPONENT_POINTLIGHT = 1 << 5,					// 0000 0000 0000 0010 0000			32
-		COMPONENT_SHADOW_CASTER = 1 << 6,				// 0000 0000 0000 0100 0000			64
-	};
+		COMPONENT_RENDERABLE = 1 << 1,					// 0000 0000 0000 0000 0010			2
+		COMPONENT_DIRECTIONAL_LIGHT = 1 << 2,			// 0000 0000 0000 0000 0100			4
+		COMPONENT_SPOTLIGHT = 1 << 3,					// 0000 0000 0000 0000 1000			8
+		COMPONENT_POINTLIGHT = 1 << 4,					// 0000 0000 0000 0001 0000			16
+		COMPONENT_MODEL = 1 << 5,						// 0000 0000 0000 0010 0000			32	
+		COMPONENT_GEOMETRY = 1 << 6,					// 0000 0000 0000 0100 0000			64 
+		COMPONENT_SHADOW_CASTER = 1 << 7,				// 0000 0000 0000 1000 0000			128
+		COMPONENT_TEXTURE = 1 << 8,						// 0000 0000 0001 0000 0000			256
+		COMPONENT_MATERIAL = 1 << 9,					// 0000 0000 0010 0000 0000			512
+		//COMPONENT_LIGHT_EMITTER = 1 << 10,				// 0000 0000 0100 0000 0000			1024
+		//COMPONENT_LIGHT_ATTENUATION = 1 << 11,			// 0000 0000 1000 0000 0000			2048
+		//COMPONENT_LIGHT_DIRECTION = 1 << 12,			// 0000 0001 0000 0000 0000			4096
+		//COMPONENT_LIGHT_CUT_OFF = 1 << 13,				// 0000 0010 0000 0000 0000			8192  
+		//COMPONENT_DIRECTION_SHADOW_EMITTER = 1 << 14,	// 0000 0100 0000 0000 0000			16384
+		COMPONENT_COLLISION = 1 << 15,					// 0000 1000 0000 0000 0000			32768
+		COMPONENT_RIGID_BODY = 1 << 16,					// 0001 0000 0000 0000 0000			65536
+		
 
-	IComponent(ComponentFlags& componentType);
+	}; ComponentFlags componentType;
+
+	IComponent(ComponentFlags componentType);
+	virtual ComponentFlags GetComponentType();
 	~IComponent();
-
-	ComponentFlags GetComponentType();
-
-private:
-	ComponentFlags componentType;
 };
 #endif

@@ -1,47 +1,187 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Systems">
-      <UniqueIdentifier>{24061b16-4be3-4cb8-9613-222f8a0936d2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Managers">
-      <UniqueIdentifier>{b8ce51e3-90bb-41da-be35-cef5e6b0fcd3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Components">
-      <UniqueIdentifier>{fb3aefae-c8b3-45ba-a35c-05a1427bf28d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities">
-      <UniqueIdentifier>{e9e21dd5-28b0-442b-a04b-67fd638a2d63}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utlity">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="targetver.h">
-      <Filter>Utlity</Filter>
-    </ClInclude>
-    <ClInclude Include="IComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="ISystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="ISystem.cpp">
+    <ClCompile Include="ComponentCollision.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentDirectionalLight.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMaterial.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentModel.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentPointLight.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentRenderable.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentRigidBody.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentShadowCast.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentSpotlight.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentTexture.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemCollision.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Entities</Filter>
+    <ClCompile Include="SystemLighting.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemManager.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemPhysics.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemRender.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemShadows.cpp">
+      <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="IComponent.cpp">
-      <Filter>Components</Filter>
+      <Filter>Components\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="ISystem.cpp">
+      <Filter>Systems\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ComponentCollision.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentDirectionalLight.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentMaterial.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentModel.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentPointLight.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentRenderable.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentRigidBody.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentShadowCast.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentSpotlight.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentTexture.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemCollision.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemLighting.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemManager.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemPhysics.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemRender.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemShadows.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="IComponent.h">
+      <Filter>Components\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="ISystem.h">
+      <Filter>Systems\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Components">
+      <UniqueIdentifier>{bfc2dab2-0712-4ef2-8c21-6555e29f16b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{a15ec258-e45d-46fd-ab94-1a1c02ccc8b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{27d84e54-1deb-4e2f-a5c2-8b982f9afc71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{6960f038-c04c-46d2-8076-c2c1d4b49199}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Utility">
+      <UniqueIdentifier>{954e1c54-6270-4e24-9007-4e7975876c5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Utility">
+      <UniqueIdentifier>{34954807-17a2-4dab-a85f-6cb078940ad4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entity">
+      <UniqueIdentifier>{30b30ce9-ea33-4e92-8c5d-c71ff5f0f561}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
