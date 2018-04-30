@@ -1,38 +1,19 @@
 #include "SystemLighting.h"
+#include "Simulation.h"
 
-SystemLighting::SystemLighting(std::shared_ptr<Camera> pCamera) :
+SystemLighting::SystemLighting() :
 	ISystem("SystemLighting", (IComponent::ComponentFlags)(IComponent::COMPONENT_DIRECTIONAL_LIGHT | IComponent::COMPONENT_POINTLIGHT | IComponent::COMPONENT_SPOTLIGHT)),
-	lightingShader(std::make_shared<Shader>("../Kerplunk/lighting.vert", "../Kerplunk/lighting.frag", "../Kerplunk/explode.geom")),
-	lightBoxShader("../Kerplunk/lightBox.vert", "../Kerplunk/lightBox.frag", nullptr),
-	camera(pCamera)
+	lightingShader(std::make_shared<Shader>("../Plunk Engine/lighting.vert", "../Plunk Engine/lighting.frag", "../Plunk Engine/explode.geom")),
+	lightBoxShader("../Plunk Engine/lightBox.vert", "../Plunk Engine/lightBox.frag", nullptr)
 {
 	SetupShader();
 }
+
 SystemLighting::~SystemLighting()
-{
-}
+{}
 
 void SystemLighting::OnLoad(const std::shared_ptr<Entity> &entity)
 {
-	//if ((entity->mask & MASK) == MASK)
-	//{
-	//}
-	//if ((entity->mask & MASK) != 0) // if the entity contains any of the mask bits set (if its a light source)
-	//{
-	//	if ((entity->mask & IComponent::COMPONENT_DIRECTIONAL_LIGHT) == IComponent::COMPONENT_DIRECTIONAL_LIGHT)
-	//	{
-	//		std::shared_ptr<ComponentDirectionalLight> directionLightComp = std::dynamic_pointer_cast<ComponentDirectionalLight> (entity->FindComponent(4));
-	//	}
-	//	else if ((entity->mask & IComponent::COMPONENT_SPOTLIGHT) == IComponent::COMPONENT_SPOTLIGHT)
-	//	{
-	//		std::shared_ptr<ComponentSpotlight> spotLightComp = std::dynamic_pointer_cast<ComponentSpotlight> (entity->FindComponent(8));
-	//	}
-	//	else if ((entity->mask & IComponent::COMPONENT_POINTLIGHT) == IComponent::COMPONENT_POINTLIGHT)
-	//	{
-	//		std::shared_ptr<ComponentPointLight> pointLightComp = std::dynamic_pointer_cast<ComponentPointLight> (entity->FindComponent(16));
-	//	}
-	//}
-
 	IComponent::ComponentFlags RenderableMask = (IComponent::ComponentFlags)(IComponent::COMPONENT_RIGID_BODY | IComponent::COMPONENT_RENDERABLE);
 
 	if ((entity->mask & RenderableMask) == RenderableMask) // if the entity will be rendered
@@ -60,18 +41,18 @@ void SystemLighting::OnTickStart()
 {
 	// Set up the lighting shader for rendering the lights
 	lightingShader->use();
-	lightingShader->setVec3("viewPos", camera->Position);
+	lightingShader->setVec3("viewPos", mSimulationInstance->mCamera.Position);
 	lightingShader->setFloat("time", glfwGetTime());
 
 	float aspectRatio = (float)(SCR_WIDTH) / (float)(SCR_HEIGHT);
 
-	glm::mat4 proj = glm::perspective(glm::radians(camera->Zoom), aspectRatio, viewDistanceNear, viewDistanceFar);
+	glm::mat4 proj = glm::perspective(glm::radians(mSimulationInstance->mCamera.Zoom), aspectRatio, viewDistanceNear, viewDistanceFar);
 
 	// Set matrices in the uniform buffer object (sets the projection and view matrices in the lighting and light box shaders)
 	glBindBuffer(GL_UNIFORM_BUFFER, ShaderUBO);
 
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(proj));
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(camera->GetViewMatrix()));
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(glm::mat4), sizeof(glm::mat4), glm::value_ptr(mSimulationInstance->mCamera.GetViewMatrix()));
 
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 

@@ -22,32 +22,10 @@ public:
 	std::shared_ptr<IComponent> FindComponent(int pComponentValue) const; 
 
 	template <typename CompType> 
-	void AddComponent(CompType& pComponent) // Adds a single component to the entity and updates the mask.
+	void AddComponent(CompType pComponent) // Adds a single component to the entity and updates the mask.
 	{
 		componentList.push_back(std::make_shared<CompType>(pComponent));
 		updateMask(pComponent);
-	}
-
-	//// Compares two entities by their adresses to determine if they are the same entity.
-	//bool operator==(const Entity& rhs) const {
-	//	return
-	//		this == &rhs;
-	//}
-	//// Compares two entities by their adresses to determine if they are not the same entity.
-	//bool operator!=(const Entity& rhs) const {
-	//	return
-	//		this != &rhs;
-	//}
-
-
-	// Compares two entities by their adresses to determine if they are the same entity.
-	bool operator==(const std::shared_ptr<Entity>& rhs) const {
-		return
-			false;
-	}
-	bool operator!=(const std::shared_ptr<Entity>& rhs) const {
-		return
-			false;
 	}
 
 private:

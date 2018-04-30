@@ -14,7 +14,7 @@
 class SystemShadows : public ISystem
 {
 public:
-	SystemShadows(EntityManager& pManager);
+	SystemShadows();
 	~SystemShadows();
 
 	// Vector of all the entities that can be rendered.

@@ -14,7 +14,7 @@ class EntityManager;
 class SystemCollision : public ISystem
 {
 public:
-	SystemCollision(EntityManager& pManager);
+	SystemCollision();
 	~SystemCollision();
 	
 	void OnLoad(const std::shared_ptr<Entity>& entity);
@@ -23,7 +23,6 @@ public:
 	void Tick(const std::shared_ptr<Entity>& entity);
 
 private:
-	EntityManager& entityManager;
 	bool CollisionSpherePlane(const std::shared_ptr<Entity> &pSphereEntity, const std::shared_ptr<Entity> &pCubeEntity);
 	bool CollisionSphereSphere(const std::shared_ptr<Entity> &pSphereEntity, const std::shared_ptr<Entity> &pSphereEntity2);
 	glm::vec3 PlaneToPoint(const glm::vec3 &pPlaneNormal, const glm::vec3 &pPlanePosition, glm::vec3& pPoint);

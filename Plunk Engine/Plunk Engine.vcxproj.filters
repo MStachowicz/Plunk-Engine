@@ -44,9 +44,6 @@
     <ClCompile Include="SystemLighting.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
-    <ClCompile Include="SystemManager.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
     <ClCompile Include="SystemPhysics.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
@@ -81,6 +78,12 @@
       <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -130,9 +133,6 @@
     <ClInclude Include="SystemLighting.h">
       <Filter>Systems</Filter>
     </ClInclude>
-    <ClInclude Include="SystemManager.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
     <ClInclude Include="SystemPhysics.h">
       <Filter>Systems</Filter>
     </ClInclude>
@@ -172,6 +172,12 @@
     <ClInclude Include="InputManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Simulation.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SystemManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">
@@ -195,5 +201,31 @@
     <Filter Include="Entity">
       <UniqueIdentifier>{30b30ce9-ea33-4e92-8c5d-c71ff5f0f561}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{b64bf318-8116-433b-ab8b-ba75feef6339}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="depthShader.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="depthShader.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="explode.geom">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="lightBox.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="lightBox.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="lighting.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="lighting.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

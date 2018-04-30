@@ -178,6 +178,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="SystemCollision.cpp" />
     <ClCompile Include="SystemLighting.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Simulation.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="SystemCollision.h" />
     <ClInclude Include="SystemLighting.h" />
@@ -218,6 +220,15 @@
     <ClInclude Include="SystemShadows.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="WindowManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="depthShader.frag" />
+    <None Include="depthShader.vert" />
+    <None Include="explode.geom" />
+    <None Include="lightBox.frag" />
+    <None Include="lightBox.vert" />
+    <None Include="lighting.frag" />
+    <None Include="lighting.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

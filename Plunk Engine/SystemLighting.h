@@ -22,7 +22,7 @@
 class SystemLighting : public ISystem
 {
 public:
-	SystemLighting(std::shared_ptr<Camera> pCamera);
+	SystemLighting();
 	~SystemLighting();
 
 	// Screen dimensions
@@ -39,8 +39,6 @@ public:
 	//std::shared_ptr<Geometry> lightBox = ResourceManager::LoadGeometry("data/cube.txt");
 	// Whether the lightBoxShader will be used to render light sources.
 	bool drawLightSources = true;
-	// Camera object of the scene.
-	std::shared_ptr<Camera> camera;
 
 
 	void OnLoad(const std::shared_ptr<Entity> &entity);

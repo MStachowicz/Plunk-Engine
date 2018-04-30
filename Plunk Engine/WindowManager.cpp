@@ -1,7 +1,8 @@
 #include <iostream>
 #include "WindowManager.h"
+#include "InputManager.h"
 
-WindowManager::WindowManager(const InputManager& pInputManager) : mInputManager(pInputManager)
+WindowManager::WindowManager()
 {}
 
 WindowManager::~WindowManager()
@@ -38,11 +39,9 @@ GLFWwindow* const WindowManager::InitWindow()
 	glfwMakeContextCurrent(mWindow);
 	glfwSetFramebufferSizeCallback(mWindow, framebuffer_size_callback);
 
-	// Setting up mouse input 
+	// Setting up input callbacks to the input manager functions
 	glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwSetCursorPosCallback(mWindow, mInputManager.mouse_callback);
-	glfwSetScrollCallback(mWindow, mInputManager.scroll_callback);
-	glfwSetKeyCallback(mWindow, mInputManager.key_callback);
+	
 
 	glewExperimental = GL_TRUE;
 
@@ -63,7 +62,3 @@ GLFWwindow* const WindowManager::InitWindow()
 	return mWindow;
 }
 
-const bool WindowManager::ShouldWindowClose(GLFWwindow *const pWindow)
-{
-	return glfwWindowShouldClose(pWindow);
-}

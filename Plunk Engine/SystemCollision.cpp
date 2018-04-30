@@ -1,11 +1,10 @@
 #include "SystemCollision.h"
+#include "Simulation.h"
 
-SystemCollision::SystemCollision(EntityManager& pManager) : ISystem("SystemCollision", (IComponent::ComponentFlags)(IComponent::COMPONENT_RIGID_BODY | IComponent::COMPONENT_COLLISION)), entityManager(pManager)
-{
-}
+SystemCollision::SystemCollision() : ISystem("SystemCollision", (IComponent::ComponentFlags)(IComponent::COMPONENT_RIGID_BODY | IComponent::COMPONENT_COLLISION))
+{}
 SystemCollision::~SystemCollision()
-{
-}
+{}
 
 void SystemCollision::OnLoad(const std::shared_ptr<Entity> &entity)
 {
@@ -14,11 +13,11 @@ void SystemCollision::OnLoad(const std::shared_ptr<Entity> &entity)
 	}
 }
 void SystemCollision::OnTickStart()
-{
-}
+{}
+
 void SystemCollision::OnTickStart(const std::shared_ptr<Entity>& entity)
-{
-}
+{}
+
 void SystemCollision::Tick(const std::shared_ptr<Entity>& entity)
 {
 	if ((entity->mask & MASK) == MASK)
@@ -27,15 +26,15 @@ void SystemCollision::Tick(const std::shared_ptr<Entity>& entity)
 		std::shared_ptr<ComponentCollision> collisionComp = std::dynamic_pointer_cast<ComponentCollision> (entity->FindComponent(32768));
 
 
-		for (unsigned int i = 0; i < entityManager.entityList.size(); i++)
+		for (unsigned int i = 0; i < mSimulationInstance->entityManager.entityList.size(); i++)
 		{
-			if ((entityManager.entityList[i]->mask & MASK) == MASK) // if the entity is collidable 
+			if ((mSimulationInstance->entityManager.entityList[i]->mask & MASK) == MASK) // if the entity is collidable 
 			{
-				if (entity != entityManager.entityList[i]) // if it is not the same entity as currently being checked
+				if (entity != mSimulationInstance->entityManager.entityList[i]) // if it is not the same entity as currently being checked
 				{
 					// Retrieve all the components that will be checked against.
-					std::shared_ptr<ComponentRigidBody> RigidBodyComponent2 = std::dynamic_pointer_cast<ComponentRigidBody> (entityManager.entityList[i]->FindComponent(65536));
-					std::shared_ptr<ComponentCollision> collisionComp2 = std::dynamic_pointer_cast<ComponentCollision> (entityManager.entityList[i]->FindComponent(32768));
+					std::shared_ptr<ComponentRigidBody> RigidBodyComponent2 = std::dynamic_pointer_cast<ComponentRigidBody> (mSimulationInstance->entityManager.entityList[i]->FindComponent(65536));
+					std::shared_ptr<ComponentCollision> collisionComp2 = std::dynamic_pointer_cast<ComponentCollision> (mSimulationInstance->entityManager.entityList[i]->FindComponent(32768));
 
 
 					switch (collisionComp->type)
@@ -49,14 +48,14 @@ void SystemCollision::Tick(const std::shared_ptr<Entity>& entity)
 							// SPHERE V SPHERE CHECK
 							// --------------------------------------------------------------------------------------------------
 							// The vector from the sphere to the sphere being checked against.
-							CollisionSphereSphere(entity, entityManager.entityList[i]);
+							CollisionSphereSphere(entity, mSimulationInstance->entityManager.entityList[i]);
 							break;
 						}
 						case ComponentCollision::collisionPrimitiveType::Plane:
 						{
 							// SPHERE V PLANE CHECK
 							// --------------------------------------------------------------------------------------------------
-							CollisionSpherePlane(entity, entityManager.entityList[i]);
+							CollisionSpherePlane(entity, mSimulationInstance->entityManager.entityList[i]);
 							break;
 						}
 						}

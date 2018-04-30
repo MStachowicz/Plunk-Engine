@@ -5,6 +5,8 @@
 #include <string>
 #include "Entity.h"
 
+class Simulation;
+
 class ISystem
 {
 
@@ -13,6 +15,7 @@ public:
 
 	std::string name;
 	const IComponent::ComponentFlags MASK;
+	Simulation* mSimulationInstance;
 
 	virtual void OnLoad(const std::shared_ptr<Entity> &entity) = 0;
 	

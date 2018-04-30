@@ -52,13 +52,13 @@ std::string ResourceManager::SetDirectory()
 	string(result, GetModuleFileName(NULL, result, MAX_PATH));
 	string path = (string)result;
 
-	// Find the second to last occurence of the Kerplunk directory
+	// Find the second to last occurence of the Plunk directory
 	string dir = "Plunk Engine"; // the directory the path will be trimmed after
 	int dirPos = nthOccurrence(path, dir, 2);
 	// Cut down the path to the directory of the solution
 	path = path.substr(0, dirPos + dir.length());
 	// Add the directory of the resource files
-	path.append("/Plunk Engine/Resources/");
+	path.append("/Plunk Engine/Assets/");
 	// Replace all the double backslashes with forward ones.
 	replaceAllOccurrrences(path, "\\", "/");
 

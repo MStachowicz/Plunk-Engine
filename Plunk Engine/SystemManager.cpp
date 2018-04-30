@@ -32,10 +32,12 @@ void SystemManager::ActionSystems(EntityManager & manager)
 	}
 }
 
-void SystemManager::LoadSystems(EntityManager &manager)
+void SystemManager::LoadSystems(EntityManager &manager, Simulation* pSimulation)
 {
 	for (int i = 0; i < systemList.size(); i++)
 	{
+		systemList[i]->mSimulationInstance = pSimulation;
+
 		for (int j = 0; j < manager.entityList.size(); j++)
 		{
 			systemList[i]->OnLoad(manager.entityList[j]);

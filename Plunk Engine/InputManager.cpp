@@ -22,3 +22,10 @@ void InputManager::key_callback(GLFWwindow* window, int, int, int, int)
 		glfwSetWindowShouldClose(window, true);
 	}
 }
+
+const void InputManager::setInputCallbacks(GLFWwindow *const pWindow)
+{
+	glfwSetCursorPosCallback(pWindow, mouse_callback);
+	glfwSetScrollCallback(pWindow, scroll_callback);
+	glfwSetKeyCallback(pWindow, key_callback);
+}

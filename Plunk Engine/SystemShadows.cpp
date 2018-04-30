@@ -1,7 +1,7 @@
 #include "SystemShadows.h"
 
-SystemShadows::SystemShadows(EntityManager& pManager) : ISystem("SystemShadows", (IComponent::ComponentFlags)(IComponent::COMPONENT_SHADOW_CASTER)),
-directionalDepthShader(std::make_shared<Shader>("../Kerplunk/depthShader.vert", "../Kerplunk/depthShader.frag", nullptr))
+SystemShadows::SystemShadows() : ISystem("SystemShadows", (IComponent::ComponentFlags)(IComponent::COMPONENT_SHADOW_CASTER)),
+directionalDepthShader(std::make_shared<Shader>("../Plunk Engine/depthShader.vert", "../Plunk Engine/depthShader.frag", nullptr))
 {}
 SystemShadows::~SystemShadows()
 {}
@@ -31,7 +31,6 @@ void SystemShadows::OnLoad(const std::shared_ptr<Entity>& entity)
 			}
 		}
 	}
-
 }
 
 void SystemShadows::OnTickStart(const std::shared_ptr<Entity>& entity)
