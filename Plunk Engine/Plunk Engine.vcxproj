@@ -172,6 +172,7 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="IComponent.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="ISystem.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -185,6 +186,7 @@
     <ClCompile Include="SystemRender.cpp" />
     <ClCompile Include="SystemShadows.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -201,6 +203,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="IComponent.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="ISystem.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
@@ -214,6 +217,7 @@
     <ClInclude Include="SystemRender.h" />
     <ClInclude Include="SystemShadows.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="WindowManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
