@@ -43,17 +43,52 @@ void AddEntitiesToManager(EntityManager &entityManager)
 		entityManager.AddEntity(entity);
 	}
 
-	Entity entity("plane");
-	ComponentRigidBody body = ComponentRigidBody(glm::vec3(0, 0, 0));
-	body.ignorePhysics = true;
-	body.mass = 1000000000000.f;
-	entity.AddComponent(body);
-	entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Plane));
-	entity.AddComponent(ComponentModel(std::string("models/primitives/plane/plane.obj"), true, false));
-	entity.AddComponent(ComponentRenderable());
-	glm::vec3 colour(GenerateRandomNum(0, 1), GenerateRandomNum(0, 1), GenerateRandomNum(0, 1));
-	entity.AddComponent(ComponentMaterial(colour, colour, glm::vec3(1.0), 64.0f));
-	entityManager.AddEntity(entity);
+	for (int i = 0; i < 1; i++)
+	{
+		Entity entity("sphereBig");
+		ComponentRigidBody body = ComponentRigidBody(glm::vec3(0, 20, 0));
+		body.mass = 100; body.scale = 10;
+		entity.AddComponent(body);
+		entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Sphere));
+		entity.AddComponent(ComponentModel(std::string("models/primitives/icosphere/icosphere4.obj"), true, false));
+		entity.AddComponent(ComponentRenderable());
+		glm::vec3 colour(GenerateRandomNum(0, 1), GenerateRandomNum(0, 1), GenerateRandomNum(0, 1));
+		entity.AddComponent(ComponentMaterial(colour, colour, glm::vec3(1.0), 64.0f));
+		entityManager.AddEntity(entity);
+	}
+
+	for (int i = 0; i < 1; i++)
+	{
+		Entity entity("plane");
+		ComponentRigidBody body = ComponentRigidBody(glm::vec3(0, 0, 0));
+		body.ignorePhysics = true; body.mass = 1000000000000.f; body.scale = 100;
+		entity.AddComponent(body);
+		entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Plane));
+		entity.AddComponent(ComponentModel(std::string("models/primitives/plane/plane.obj"), true, false));
+		entity.AddComponent(ComponentRenderable());
+		glm::vec3 colour(GenerateRandomNum(0, 1), GenerateRandomNum(0, 1), GenerateRandomNum(0, 1));
+		entity.AddComponent(ComponentMaterial(colour, colour, glm::vec3(1.0), 64.0f));
+		entityManager.AddEntity(entity);
+	}
+
+	for (int i = 0; i < 1; i++)
+	{
+		Entity entity("cylinder");
+		ComponentRigidBody body = ComponentRigidBody(glm::vec3(0, 0, 45));
+		body.ignorePhysics = true; body.mass = 1000000000000.f; body.scale = 1;
+		entity.AddComponent(body);
+		//entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Plane));
+		entity.AddComponent(ComponentModel(std::string("models/primitives/cylinder/cylinder64.obj"), true, false));
+		entity.AddComponent(ComponentRenderable());
+		glm::vec3 colour(GenerateRandomNum(0, 1), GenerateRandomNum(0, 1), GenerateRandomNum(0, 1));
+		entity.AddComponent(ComponentMaterial(colour, colour, glm::vec3(1.0), 64.0f));
+		entityManager.AddEntity(entity);
+	}
+
+	Entity DirLight("DirLight");
+	DirLight.AddComponent(ComponentDirectionalLight());
+	DirLight.AddComponent(ComponentShadowCast());
+	entityManager.AddEntity(DirLight);
 }
 
 Simulation::Simulation(GLFWwindow *const pWindow) :
