@@ -46,7 +46,7 @@ void AddEntitiesToManager(EntityManager &entityManager)
 	for (int i = 0; i < 1; i++)
 	{
 		Entity entity("sphereBig");
-		RigidBodySphere body = RigidBodySphere(glm::vec3(0, 0, 45), 0.5f);
+		RigidBodySphere body = RigidBodySphere(glm::vec3(0, 0.5f, 45), 0.5f);
 		body.mass = 10000; 
 		body.mApplyGravity = false;
 
@@ -78,7 +78,7 @@ void AddEntitiesToManager(EntityManager &entityManager)
 	for (int i = 0; i < 1; i++)
 	{
 		Entity entity("cylinder");
-		RigidBodyCylinder body = RigidBodyCylinder(glm::vec3(2, 0, 45), 1.f, 0.5f);
+		RigidBodyCylinder body = RigidBodyCylinder(glm::vec3(2, 0.5f, 45), 1.f, 0.5f);
 		body.mApplyGravity = false; 
 		body.mass = 1000000000000.f;
 

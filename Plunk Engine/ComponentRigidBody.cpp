@@ -50,6 +50,7 @@ RigidBodyPlane::RigidBodyPlane(const glm::vec3 & pStartingPosition, const glm::v
 	mNormal(glm::vec3(0.f, 1.f, 0.f)) // Default model file is a plane parallel to the z-axis with normal +y
 {
 	Rotate(pRotation);
+	scale = glm::vec3(100);
 }
 
 const glm::vec3 & RigidBodyPlane::GetNormal() const
