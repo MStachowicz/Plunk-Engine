@@ -3,15 +3,13 @@
 
 SystemCollision::SystemCollision() : ISystem("SystemCollision", (IComponent::ComponentFlags)(IComponent::COMPONENT_RIGID_BODY | IComponent::COMPONENT_COLLISION))
 {}
+
 SystemCollision::~SystemCollision()
 {}
 
 void SystemCollision::OnLoad(const std::shared_ptr<Entity> &entity)
-{
-	if ((entity->mask & MASK) == MASK)
-	{
-	}
-}
+{}
+
 void SystemCollision::OnTickStart()
 {}
 
@@ -98,6 +96,7 @@ bool SystemCollision::CollisionSphereSphere(const std::shared_ptr<Entity>& pSphe
 
 	return false;
 }
+
 // Finds the magnitude of the vector between the sphere and the closest point on a plane comparing it to the sphere radius.
 bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSphereEntity, const std::shared_ptr<Entity> &pPlaneEntity)
 {
@@ -105,7 +104,7 @@ bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSpher
 	std::shared_ptr<ComponentRigidBody> planeRigidBody = std::dynamic_pointer_cast<ComponentRigidBody> (pPlaneEntity->FindComponent(65536));
 
 	// Find the normal of the plane after its rotations
-	glm::vec3 planeNormal = glm::vec3(0, 0, 1);
+	glm::vec3 planeNormal = glm::vec3(0, 1, 0);
 
 	// Rotate the normal by the plane rotations
 	glm::mat4 rotMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(planeRigidBody->rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));

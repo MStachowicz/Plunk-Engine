@@ -42,6 +42,18 @@ void AddEntitiesToManager(EntityManager &entityManager)
 		entity.AddComponent(ComponentMaterial(colour, colour, glm::vec3(1.0), 64.0f));
 		entityManager.AddEntity(entity);
 	}
+
+	Entity entity("plane");
+	ComponentRigidBody body = ComponentRigidBody(glm::vec3(0, 0, 0));
+	body.ignorePhysics = true;
+	body.mass = 1000000000000.f;
+	entity.AddComponent(body);
+	entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Plane));
+	entity.AddComponent(ComponentModel(std::string("models/primitives/plane/plane.obj"), true, false));
+	entity.AddComponent(ComponentRenderable());
+	glm::vec3 colour(GenerateRandomNum(0, 1), GenerateRandomNum(0, 1), GenerateRandomNum(0, 1));
+	entity.AddComponent(ComponentMaterial(colour, colour, glm::vec3(1.0), 64.0f));
+	entityManager.AddEntity(entity);
 }
 
 Simulation::Simulation(GLFWwindow *const pWindow) :
