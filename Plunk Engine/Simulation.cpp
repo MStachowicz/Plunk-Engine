@@ -61,7 +61,7 @@ void AddEntitiesToManager(EntityManager &entityManager)
 	{
 		Entity entity("plane");
 		ComponentRigidBody body = ComponentRigidBody(glm::vec3(0, 0, 0));
-		body.ignorePhysics = true; body.mass = 1000000000000.f; body.scale = 100;
+		body.mApplyGravity = false; body.mass = 1000000000000.f; body.scale = 100;
 		entity.AddComponent(body);
 		entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Plane));
 		entity.AddComponent(ComponentModel(std::string("models/primitives/plane/plane.obj"), true, false));
@@ -75,7 +75,7 @@ void AddEntitiesToManager(EntityManager &entityManager)
 	{
 		Entity entity("cylinder");
 		ComponentRigidBody body = ComponentRigidBody(glm::vec3(0, 0, 45));
-		body.ignorePhysics = true; body.mass = 1000000000000.f; body.scale = 1;
+		body.mApplyGravity = false; body.mass = 1000000000000.f; body.scale = 1;
 		entity.AddComponent(body);
 		//entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Plane));
 		entity.AddComponent(ComponentModel(std::string("models/primitives/cylinder/cylinder64.obj"), true, false));

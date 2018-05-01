@@ -6,8 +6,3 @@ ComponentCollision::ComponentCollision(collisionPrimitiveType pType) :
 
 ComponentCollision::~ComponentCollision()
 {}
-
-void ComponentCollision::AddCollision(Entity & entityCollidedWith, glm::vec3 &collisionPoint)
-{
-	collisions.push_back(CollisionData(entityCollidedWith, collisionPoint));
-}

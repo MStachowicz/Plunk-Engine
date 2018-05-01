@@ -1,7 +1,9 @@
 #include "SystemCollision.h"
 #include "Simulation.h"
 
-SystemCollision::SystemCollision() : ISystem("SystemCollision", (IComponent::ComponentFlags)(IComponent::COMPONENT_RIGID_BODY | IComponent::COMPONENT_COLLISION))
+SystemCollision::SystemCollision() : 
+	ISystem("SystemCollision", 
+	(IComponent::ComponentFlags)(IComponent::COMPONENT_RIGID_BODY | IComponent::COMPONENT_COLLISION))
 {}
 
 SystemCollision::~SystemCollision()
@@ -23,7 +25,6 @@ void SystemCollision::Tick(const std::shared_ptr<Entity>& entity)
 		std::shared_ptr<ComponentRigidBody> RigidBodyComponent = std::dynamic_pointer_cast<ComponentRigidBody> (entity->FindComponent(65536));
 		std::shared_ptr<ComponentCollision> collisionComp = std::dynamic_pointer_cast<ComponentCollision> (entity->FindComponent(32768));
 
-
 		for (unsigned int i = 0; i < mSimulationInstance->entityManager.entityList.size(); i++)
 		{
 			if ((mSimulationInstance->entityManager.entityList[i]->mask & MASK) == MASK) // if the entity is collidable 
@@ -33,7 +34,6 @@ void SystemCollision::Tick(const std::shared_ptr<Entity>& entity)
 					// Retrieve all the components that will be checked against.
 					std::shared_ptr<ComponentRigidBody> RigidBodyComponent2 = std::dynamic_pointer_cast<ComponentRigidBody> (mSimulationInstance->entityManager.entityList[i]->FindComponent(65536));
 					std::shared_ptr<ComponentCollision> collisionComp2 = std::dynamic_pointer_cast<ComponentCollision> (mSimulationInstance->entityManager.entityList[i]->FindComponent(32768));
-
 
 					switch (collisionComp->type)
 					{
@@ -45,7 +45,6 @@ void SystemCollision::Tick(const std::shared_ptr<Entity>& entity)
 						{
 							// SPHERE V SPHERE CHECK
 							// --------------------------------------------------------------------------------------------------
-							// The vector from the sphere to the sphere being checked against.
 							CollisionSphereSphere(entity, mSimulationInstance->entityManager.entityList[i]);
 							break;
 						}
@@ -153,15 +152,6 @@ bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSpher
 		{
 			sphereRigidBody->velocity = sphereRigidBody->velocity + ((impulseMagnitude / sphereRigidBody->mass) * collisionNormal);
 			planeRigidBody->velocity = planeRigidBody->velocity - ((impulseMagnitude / planeRigidBody->mass) * collisionNormal);
-
-			//log
-		/*	std::cout << std::fixed <<
-			"Collision with: " << pPlaneEntity.name <<
-			"\nPlane normal: "  << planeNormal.x << ", " << planeNormal.y << ", " << planeNormal.z <<
-			"\nCollision normal: " << collisionNormal.x << ", " << collisionNormal.y << ", " << collisionNormal.z <<
-			"\nSphere position: " << sphereRigidBody->position.x << ", " << sphereRigidBody->position.y << ", " << sphereRigidBody->position.z <<
-			"\nSphere velocity: " << sphereRigidBody->velocity.x << ", " << sphereRigidBody->velocity.y << ", " << sphereRigidBody->velocity.z << "\n\n" <<
-			std::endl;*/
 		}
 
 		return true;

@@ -31,14 +31,8 @@ void SystemPhysics::Tick(const std::shared_ptr<Entity> &entity)
 		UpdateBodyPosition(RigidBodyComponent->position, RigidBodyComponent->velocity, mSimulationInstance->mDeltaTime);
 
 		if (applyGravity)
-			if (!RigidBodyComponent->ignorePhysics)
+			if (RigidBodyComponent->mApplyGravity)
 				ApplyGravity(RigidBodyComponent->velocity, mSimulationInstance->mDeltaTime);
-
-		// Resolve all the linear forces applied to the body since the last physics tick updating the resultant force.
-		RigidBodyComponent->ApplyForces();
-
-		// Setting the new velocity integrated from the current velocity and acceleration through all the forces applied to the body since the last tick
-		UpdateBodyVelocity(RigidBodyComponent->velocity, RigidBodyComponent->resultantForce, RigidBodyComponent->mass, mSimulationInstance->mDeltaTime);
 	}
 }
 
@@ -46,11 +40,6 @@ void SystemPhysics::Tick(const std::shared_ptr<Entity> &entity)
 void SystemPhysics::UpdateBodyPosition(glm::vec3 &pPosition, glm::vec3 &pVelocity, float tickDeltaTime)
 {
 	pPosition = pPosition + (tickDeltaTime * pVelocity);
-}
-
-void SystemPhysics::UpdateBodyVelocity(glm::vec3 & pVelocity, glm::vec3 & resultantForce, const float & pMass, const float & tickDeltaTime)
-{
-	pVelocity = pVelocity + (tickDeltaTime * (resultantForce / pMass));
 }
 
 void SystemPhysics::ApplyGravity(glm::vec3& pVelocity, const float& tickDeltaTime)
