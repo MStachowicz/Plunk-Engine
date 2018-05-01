@@ -52,7 +52,7 @@ void AddEntitiesToManager(EntityManager &entityManager)
 
 		entity.AddComponent(body);
 		entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Sphere));
-		entity.AddComponent(ComponentModel(std::string("models/primitives/icosphere/icosphere4.obj"), true, false));
+		entity.AddComponent(ComponentModel(std::string("models/primitives/icosphere/icosphere6.obj"), true, false));
 		entity.AddComponent(ComponentRenderable());
 		glm::vec3 colour(GenerateRandomNum(0, 1), GenerateRandomNum(0, 1), GenerateRandomNum(0, 1));
 		entity.AddComponent(ComponentMaterial(colour, colour, glm::vec3(1.0), 64.0f));
@@ -68,7 +68,7 @@ void AddEntitiesToManager(EntityManager &entityManager)
 
 		entity.AddComponent(body);
 		entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Plane));
-		entity.AddComponent(ComponentModel(std::string("models/primitives/plane/plane.obj"), true, false));
+		entity.AddComponent(ComponentModel(std::string("models/primitives/plane/quad.obj"), true, false));
 		entity.AddComponent(ComponentRenderable());
 		glm::vec3 colour(GenerateRandomNum(0, 1), GenerateRandomNum(0, 1), GenerateRandomNum(0, 1));
 		entity.AddComponent(ComponentMaterial(colour, colour, glm::vec3(1.0), 64.0f));
@@ -78,13 +78,13 @@ void AddEntitiesToManager(EntityManager &entityManager)
 	for (int i = 0; i < 1; i++)
 	{
 		Entity entity("cylinder");
-		RigidBodyCylinder body = RigidBodyCylinder(glm::vec3(2, 0, 45), 3.f, 0.5f);
+		RigidBodyCylinder body = RigidBodyCylinder(glm::vec3(2, 0, 45), 1.f, 0.5f);
 		body.mApplyGravity = false; 
 		body.mass = 1000000000000.f;
 
 		entity.AddComponent(body);
 		//entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Plane));
-		entity.AddComponent(ComponentModel(std::string("models/primitives/cylinder/cylinder64.obj"), true, false));
+		entity.AddComponent(ComponentModel(std::string("models/primitives/cylinder/cylinder256.obj"), true, false));
 		entity.AddComponent(ComponentRenderable());
 		glm::vec3 colour(GenerateRandomNum(0, 1), GenerateRandomNum(0, 1), GenerateRandomNum(0, 1));
 		entity.AddComponent(ComponentMaterial(colour, colour, glm::vec3(1.0), 64.0f));
