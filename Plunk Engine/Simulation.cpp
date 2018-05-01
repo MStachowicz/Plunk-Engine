@@ -152,3 +152,18 @@ void Simulation::TogglePauseSimulation()
 		mSimulationPaused = true;
 	}
 }
+
+void Simulation::ChangeTimeScaling(double &pAmount)
+{
+	pAmount *= 0.2;
+	mTimeScaling += pAmount;
+
+	if (mTimeScaling < 0.1)
+	{
+		mTimeScaling = 0.1;
+	}
+	else if (mTimeScaling > 1)
+	{
+		mTimeScaling = 1;
+	}
+}

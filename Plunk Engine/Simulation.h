@@ -32,14 +32,15 @@ public:
 
 	Camera mCamera; // Camera used to navigate the simulation.
 
-	float mSimulationTime; // Total amount of time simulation has been running.
-	float mTimeScaling; // Amount to scale mDeltaTime by every frame.
-	float mCurrentFrame; // Time the current frame started at.
-	float mLastFrame; // Time the last frame started at.
-	float mDeltaTime; // Amount of time between the current and last frame.
+	double mSimulationTime; // Total amount of time simulation has been running.
+	double mTimeScaling; // Amount to scale mDeltaTime by every frame.
+	double mCurrentFrame; // Time the current frame started at.
+	double mLastFrame; // Time the last frame started at.
+	double mDeltaTime; // Amount of time between the current and last frame.
 
 	void Run();
 	void TogglePauseSimulation();
+	void ChangeTimeScaling(double &pAmount);
 
 private:
 	bool mSimulationPaused;
