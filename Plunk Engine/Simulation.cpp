@@ -53,7 +53,8 @@ Simulation::Simulation(GLFWwindow *const pWindow) :
 	systemShadows(SystemShadows()),
 	systemLighting(SystemLighting()),
 	systemRender(SystemRender()),
-	mCamera(Camera(glm::vec3(0.0f, 5.0f, 50.0f)))
+	mCamera(Camera(glm::vec3(0.0f, 5.0f, 50.0f))),
+	mDeltaTime(0.f)
 {
 	systemManager.AddSystem(systemPhysics);
 	systemManager.AddSystem(systemCollision);
@@ -71,5 +72,10 @@ Simulation::~Simulation()
 
 void Simulation::Run()
 {
+	// Per frame time logic
+	mCurrentFrame = glfwGetTime();
+	mDeltaTime = mCurrentFrame - mLastFrame;
+	mLastFrame = mCurrentFrame;
+
 	systemManager.ActionSystems(entityManager);
 }

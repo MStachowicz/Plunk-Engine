@@ -36,6 +36,10 @@ public:
 
 	Camera mCamera;
 
+	float mCurrentFrame;
+	float mLastFrame;
+	float mDeltaTime;
+
 	void Run();
 };
 #endif
