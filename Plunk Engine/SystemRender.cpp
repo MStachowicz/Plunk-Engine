@@ -51,6 +51,8 @@ void SystemRender::Tick(const std::shared_ptr<Entity> &entity)
 					model = glm::rotate(model, glm::radians(RigidBodyComponent->GetRotation().y), glm::vec3(0.0f, 1.0f, 0.0f));
 					model = glm::rotate(model, glm::radians(RigidBodyComponent->GetRotation().z), glm::vec3(0.0f, 0.0f, 1.0f));
 
+					glm::vec3 scale = RigidBodyComponent->GetScale();
+
 					model = glm::scale(model, glm::vec3(RigidBodyComponent->GetScale()));
 
 					shader->setMat4("model", model);

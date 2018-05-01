@@ -52,7 +52,7 @@ void SystemCollision::Tick(const std::shared_ptr<Entity>& entity)
 						{
 							// SPHERE V PLANE CHECK
 							// --------------------------------------------------------------------------------------------------
-							CollisionSpherePlane(entity, mSimulationInstance->entityManager.entityList[i]);
+							//CollisionSpherePlane(entity, mSimulationInstance->entityManager.entityList[i]);
 							break;
 						}
 						}
@@ -106,11 +106,10 @@ bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSpher
 
 	// The signed distance from the sphere center to the closest point on the plane
 	float distance = glm::length(sphereToClosestPoint);
-	float overlap = sphereRigidBody->mRadius - distance;
-
+	distance -= sphereRigidBody->mRadius;
 
 	// If a collision is detected
-	if (overlap >= 0)
+	if (distance <= 0)
 	{
 		// Reverse the plane normal if sphere is behind the plane
 		glm::vec3 sphereToPlane(sphereRigidBody->position - planeRigidBody->position);
@@ -123,7 +122,7 @@ bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSpher
 
 
 		// Find how long ago (t) the collision occurred and move the sphere back that timestep
-		float t = overlap / glm::length(sphereRigidBody->velocity);
+		float t = abs(distance) / glm::length(sphereRigidBody->velocity);
 		sphereRigidBody->position = sphereRigidBody->position + (t * -sphereRigidBody->velocity);
 
 		// how far along the normal of the plane from sphere = collision point
