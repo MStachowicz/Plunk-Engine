@@ -101,11 +101,11 @@ Simulation::Simulation(GLFWwindow *const pWindow) :
 	systemLighting(SystemLighting()),
 	systemRender(SystemRender()),
 	mCamera(Camera(glm::vec3(0.0f, 5.0f, 50.0f))),
-	mDeltaTime(0.f),
-	mCurrentFrame(0.f),
-	mLastFrame(0.f),
-	mTimeScaling(1.0f),
-	mSimulationTime(0.f),
+	mDeltaTime(0.),
+	mCurrentFrame(0.),
+	mLastFrame(0.),
+	mTimeScaling(1.0),
+	mSimulationTime(0.),
 	mSimulationPaused(false)
 {
 	systemManager.AddSystem(systemPhysics);
