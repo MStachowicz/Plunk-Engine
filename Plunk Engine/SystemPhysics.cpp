@@ -9,7 +9,6 @@ SystemPhysics::SystemPhysics() :
 SystemPhysics::~SystemPhysics()
 {}
 
-// Applies the velocity to all the entities 
 void SystemPhysics::OnLoad(const std::shared_ptr<Entity> &entity)
 {}
 

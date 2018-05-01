@@ -47,7 +47,7 @@ void AddEntitiesToManager(EntityManager &entityManager)
 	{
 		Entity entity("sphereBig");
 		ComponentRigidBody body = ComponentRigidBody(glm::vec3(0, 20, 0));
-		body.mass = 100; body.scale = 10;
+		body.mass = 10000; body.scale = 10;
 		entity.AddComponent(body);
 		entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Sphere));
 		entity.AddComponent(ComponentModel(std::string("models/primitives/icosphere/icosphere4.obj"), true, false));
