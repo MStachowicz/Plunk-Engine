@@ -58,7 +58,8 @@ Simulation::Simulation(GLFWwindow *const pWindow) :
 	mCurrentFrame(0.f),
 	mLastFrame(0.f),
 	mTimeScaling(1.0f),
-	mSimulationTime(0.f)
+	mSimulationTime(0.f),
+	mSimulationPaused(false)
 {
 	systemManager.AddSystem(systemPhysics);
 	systemManager.AddSystem(systemCollision);
@@ -85,4 +86,22 @@ void Simulation::Run()
 	mDeltaTime *= mTimeScaling;
 
 	systemManager.ActionSystems(entityManager);
+}
+
+void Simulation::TogglePauseSimulation()
+{
+	if (mSimulationPaused)
+	{
+		systemPhysics.mRunning = true;
+		systemCollision.mRunning = true;
+
+		mSimulationPaused = false;
+	}
+	else
+	{
+		systemPhysics.mRunning = false;
+		systemCollision.mRunning = false;
+
+		mSimulationPaused = true;
+	}
 }

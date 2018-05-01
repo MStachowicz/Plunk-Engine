@@ -12,10 +12,12 @@ class ISystem
 
 public:
 	ISystem(std::string pName, IComponent::ComponentFlags MASK);
+	virtual ~ISystem();
 
 	std::string name;
 	const IComponent::ComponentFlags MASK;
 	Simulation* mSimulationInstance;
+	bool mRunning; // Whether this system is being called in the simulation loop.
 
 	virtual void OnLoad(const std::shared_ptr<Entity> &entity) = 0;
 	
@@ -24,6 +26,5 @@ public:
 	virtual void OnTickStart(const std::shared_ptr<Entity> &entity) = 0;
 	virtual void OnTickStart() = 0;
 	virtual void Tick(const std::shared_ptr<Entity> &entity) = 0;
-	virtual ~ISystem();
 };
 #endif

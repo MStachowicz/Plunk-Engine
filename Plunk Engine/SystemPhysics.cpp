@@ -26,22 +26,19 @@ void SystemPhysics::Tick(const std::shared_ptr<Entity> &entity)
 		std::shared_ptr<ComponentRigidBody> RigidBodyComponent =
 			std::dynamic_pointer_cast<ComponentRigidBody> (entity->FindComponent(65536));
 
-		if (!pauseSimulation)
-		{
-			// LINEAR DYNAMICS
-			//------------------------------------------------------------------------------------------------------
-			UpdateBodyPosition(RigidBodyComponent->position, RigidBodyComponent->velocity, mSimulationInstance->mDeltaTime);
+		// LINEAR DYNAMICS
+		//------------------------------------------------------------------------------------------------------
+		UpdateBodyPosition(RigidBodyComponent->position, RigidBodyComponent->velocity, mSimulationInstance->mDeltaTime);
 
-			if (applyGravity)
-				if (!RigidBodyComponent->ignorePhysics)
-					ApplyGravity(RigidBodyComponent->velocity, mSimulationInstance->mDeltaTime);
+		if (applyGravity)
+			if (!RigidBodyComponent->ignorePhysics)
+				ApplyGravity(RigidBodyComponent->velocity, mSimulationInstance->mDeltaTime);
 
-			// Resolve all the linear forces applied to the body since the last physics tick updating the resultant force.
-			RigidBodyComponent->ApplyForces();
+		// Resolve all the linear forces applied to the body since the last physics tick updating the resultant force.
+		RigidBodyComponent->ApplyForces();
 
-			// Setting the new velocity integrated from the current velocity and acceleration through all the forces applied to the body since the last tick
-			UpdateBodyVelocity(RigidBodyComponent->velocity, RigidBodyComponent->resultantForce, RigidBodyComponent->mass, mSimulationInstance->mDeltaTime);
-		}
+		// Setting the new velocity integrated from the current velocity and acceleration through all the forces applied to the body since the last tick
+		UpdateBodyVelocity(RigidBodyComponent->velocity, RigidBodyComponent->resultantForce, RigidBodyComponent->mass, mSimulationInstance->mDeltaTime);
 	}
 }
 

@@ -39,5 +39,9 @@ public:
 	float mDeltaTime; // Amount of time between the current and last frame.
 
 	void Run();
+	void TogglePauseSimulation();
+
+private:
+	bool mSimulationPaused;
 };
 #endif

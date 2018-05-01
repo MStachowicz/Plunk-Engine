@@ -57,6 +57,10 @@ void InputManager::key_callback(GLFWwindow* window, int, int, int, int)
 		mSimulationInstance->mCamera.ProcessKeyboard(UP, mSimulationInstance->mDeltaTime);
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
 		mSimulationInstance->mCamera.ProcessKeyboard(DOWN, mSimulationInstance->mDeltaTime);
+
+	// Pause simulation
+	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+		mSimulationInstance->TogglePauseSimulation();
 }
 
 const void InputManager::setInputCallbacks(GLFWwindow *const pWindow, Simulation* pSimulation)

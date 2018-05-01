@@ -20,9 +20,6 @@ public:
 
 	// Whether the gravity is being applied to all the rigid bodies
 	bool applyGravity;
-	// Whether the simulation is paused.
-	bool pauseSimulation = false;
-
 
 	void OnLoad(const std::shared_ptr<Entity> &entity);
 	void OnTickStart();
