@@ -34,11 +34,13 @@ public:
 	SystemLighting systemLighting;
 	SystemRender systemRender;
 
-	Camera mCamera;
+	Camera mCamera; // Camera used to navigate the simulation.
 
-	float mCurrentFrame;
-	float mLastFrame;
-	float mDeltaTime;
+	float mSimulationTime; // Total amount of time simulation has been running.
+	float mTimeScaling; // Amount to scale mDeltaTime by every frame.
+	float mCurrentFrame; // Time the current frame started at.
+	float mLastFrame; // Time the last frame started at.
+	float mDeltaTime; // Amount of time between the current and last frame.
 
 	void Run();
 };
