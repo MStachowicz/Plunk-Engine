@@ -66,7 +66,7 @@ Simulation::Simulation(GLFWwindow *const pWindow) :
 	systemManager.AddSystem(systemLighting); // Lighting must be performed before render
 	systemManager.AddSystem(systemRender);
 
-	inputManager.setInputCallbacks(pWindow);
+	inputManager.setInputCallbacks(pWindow, this);
 	AddEntitiesToManager(entityManager);
 	systemManager.LoadSystems(entityManager, this);
 }

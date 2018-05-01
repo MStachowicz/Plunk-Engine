@@ -1,5 +1,5 @@
-#include <iostream>
 #include "WindowManager.h"
+#include <iostream>
 #include "InputManager.h"
 
 WindowManager::WindowManager()
