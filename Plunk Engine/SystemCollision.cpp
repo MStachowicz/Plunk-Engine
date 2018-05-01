@@ -1,8 +1,8 @@
 #include "SystemCollision.h"
 #include "Simulation.h"
 
-SystemCollision::SystemCollision() : 
-	ISystem("SystemCollision", 
+SystemCollision::SystemCollision() :
+	ISystem("SystemCollision",
 	(IComponent::ComponentFlags)(IComponent::COMPONENT_RIGID_BODY | IComponent::COMPONENT_COLLISION))
 {}
 
@@ -67,16 +67,16 @@ void SystemCollision::Tick(const std::shared_ptr<Entity>& entity)
 
 bool SystemCollision::CollisionSphereSphere(const std::shared_ptr<Entity>& pSphereEntity, const std::shared_ptr<Entity>& pSphere2Entity)
 {
-	std::shared_ptr<ComponentRigidBody> sphereRigidBody = std::dynamic_pointer_cast<ComponentRigidBody> (pSphereEntity->FindComponent(65536));
-	std::shared_ptr<ComponentRigidBody> sphere2RigidBody = std::dynamic_pointer_cast<ComponentRigidBody> (pSphere2Entity->FindComponent(65536));
+	std::shared_ptr<RigidBodySphere> sphereRigidBody = std::dynamic_pointer_cast<RigidBodySphere> (pSphereEntity->FindComponent(65536));
+	std::shared_ptr<RigidBodySphere> sphere2RigidBody = std::dynamic_pointer_cast<RigidBodySphere> (pSphere2Entity->FindComponent(65536));
 
 	glm::vec3 sphere1toSphere2 = sphere2RigidBody->position - sphereRigidBody->position;
-	float distance = glm::length(sphere1toSphere2) - (sphereRigidBody->scale + sphere2RigidBody->scale);
+	float distance = glm::length(sphere1toSphere2) - (sphereRigidBody->mRadius + sphere2RigidBody->mRadius);
 
 	if (distance < 0)
 	{
 		glm::vec3 relativeVelocity = sphereRigidBody->velocity - sphere2RigidBody->velocity;
-		glm::vec3 collisionNormal = sphereRigidBody->position -	(sphereRigidBody->position + glm::normalize(sphere1toSphere2) * sphereRigidBody->scale);
+		glm::vec3 collisionNormal = sphereRigidBody->position - (sphereRigidBody->position + glm::normalize(sphere1toSphere2) * sphereRigidBody->mRadius);
 
 		float restitution = 1.0f;
 
@@ -99,24 +99,14 @@ bool SystemCollision::CollisionSphereSphere(const std::shared_ptr<Entity>& pSphe
 // Finds the magnitude of the vector between the sphere and the closest point on a plane comparing it to the sphere radius.
 bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSphereEntity, const std::shared_ptr<Entity> &pPlaneEntity)
 {
-	std::shared_ptr<ComponentRigidBody> sphereRigidBody = std::dynamic_pointer_cast<ComponentRigidBody> (pSphereEntity->FindComponent(65536));
-	std::shared_ptr<ComponentRigidBody> planeRigidBody = std::dynamic_pointer_cast<ComponentRigidBody> (pPlaneEntity->FindComponent(65536));
+	std::shared_ptr<RigidBodySphere> sphereRigidBody = std::dynamic_pointer_cast<RigidBodySphere> (pSphereEntity->FindComponent(65536));
+	std::shared_ptr<RigidBodyPlane> planeRigidBody = std::dynamic_pointer_cast<RigidBodyPlane> (pPlaneEntity->FindComponent(65536));
 
-	// Find the normal of the plane after its rotations
-	glm::vec3 planeNormal = glm::vec3(0, 1, 0);
-
-	// Rotate the normal by the plane rotations
-	glm::mat4 rotMatrix = glm::rotate(glm::mat4(1.0f), glm::radians(planeRigidBody->rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-	rotMatrix = glm::rotate(rotMatrix, glm::radians(planeRigidBody->rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-	rotMatrix = glm::rotate(rotMatrix, glm::radians(planeRigidBody->rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-	planeNormal = glm::vec3(rotMatrix * glm::vec4(planeNormal, 1.0f));
-
-	glm::vec3 sphereToClosestPoint = PlaneToPoint(planeNormal, planeRigidBody->position, sphereRigidBody->position) - sphereRigidBody->position;
-
+	glm::vec3 sphereToClosestPoint = PlaneToPoint(planeRigidBody->GetNormal(), planeRigidBody->position, sphereRigidBody->position) - sphereRigidBody->position;
 
 	// The signed distance from the sphere center to the closest point on the plane
 	float distance = glm::length(sphereToClosestPoint);
-	float overlap = sphereRigidBody->scale - distance;
+	float overlap = sphereRigidBody->mRadius - distance;
 
 
 	// If a collision is detected
@@ -124,10 +114,11 @@ bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSpher
 	{
 		// Reverse the plane normal if sphere is behind the plane
 		glm::vec3 sphereToPlane(sphereRigidBody->position - planeRigidBody->position);
-		float dot = glm::dot(sphereToPlane, planeNormal);
+		float dot = glm::dot(sphereToPlane, planeRigidBody->GetNormal());
+		glm::vec3 flippedPlaneNormal = planeRigidBody->GetNormal();
 		if (dot < 0)
 		{
-			planeNormal *= -1;
+			flippedPlaneNormal *= -1;
 		}
 
 
@@ -136,7 +127,7 @@ bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSpher
 		sphereRigidBody->position = sphereRigidBody->position + (t * -sphereRigidBody->velocity);
 
 		// how far along the normal of the plane from sphere = collision point
-		glm::vec3 collisionPoint = sphereRigidBody->position - (planeNormal * sphereRigidBody->scale);
+		glm::vec3 collisionPoint = sphereRigidBody->position - (flippedPlaneNormal * sphereRigidBody->mRadius);
 
 
 		// Collision response

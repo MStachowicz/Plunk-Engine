@@ -55,6 +55,11 @@ std::string ResourceManager::SetDirectory()
 	// Find the second to last occurence of the Plunk directory
 	string dir = "Plunk Engine"; // the directory the path will be trimmed after
 	int dirPos = nthOccurrence(path, dir, 2);
+	if (dirPos == -1)
+	{
+		cout << "ERROR::RESOURCE_MANAGER::SETDIRECTORY Unable to find second occurrence of \"Plunk Engine\" in file path" << endl;
+	}
+
 	// Cut down the path to the directory of the solution
 	path = path.substr(0, dirPos + dir.length());
 	// Add the directory of the resource files

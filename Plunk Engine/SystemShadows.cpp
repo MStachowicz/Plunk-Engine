@@ -80,11 +80,11 @@ void SystemShadows::FillDepthBuffer(const std::shared_ptr<Entity> &entity)
 					model = glm::translate(model, RigidBodyComponent->position);
 
 					// Apply rotation
-					model = glm::rotate(model, glm::radians(RigidBodyComponent->rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-					model = glm::rotate(model, glm::radians(RigidBodyComponent->rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-					model = glm::rotate(model, glm::radians(RigidBodyComponent->rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+					model = glm::rotate(model, glm::radians(RigidBodyComponent->GetRotation().x), glm::vec3(1.0f, 0.0f, 0.0f));
+					model = glm::rotate(model, glm::radians(RigidBodyComponent->GetRotation().y), glm::vec3(0.0f, 1.0f, 0.0f));
+					model = glm::rotate(model, glm::radians(RigidBodyComponent->GetRotation().z), glm::vec3(0.0f, 0.0f, 1.0f));
 
-					model = glm::scale(model, glm::vec3(RigidBodyComponent->scale));
+					model = glm::scale(model, glm::vec3(RigidBodyComponent->GetScale()));
 
 					shader->setMat4("model", model);
 

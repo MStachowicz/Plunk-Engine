@@ -31,23 +31,23 @@ void AddEntitiesToManager(EntityManager &entityManager)
 	colours.insert(std::pair<string, glm::vec3>("Orange", glm::vec3(255, 127, 0)));
 	colours.insert(std::pair<string, glm::vec3>("Red", glm::vec3(255, 0, 0)));
 
-	for (int i = 0; i < 25; i++)
+	/*for (int i = 0; i < 25; i++)
 	{
 		Entity entity("sphere");
-		entity.AddComponent(ComponentRigidBody(glm::vec3(GenerateRandomNum(-8, 8), GenerateRandomNum(3, 10), GenerateRandomNum(-8, 8))));
+		entity.AddComponent(RigidBodySphere(glm::vec3(GenerateRandomNum(-8, 8), GenerateRandomNum(3, 10), GenerateRandomNum(-8, 8)), 0.5f));
 		entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Sphere));
 		entity.AddComponent(ComponentModel(std::string("models/primitives/icosphere/icosphere4.obj"), true, false));
 		entity.AddComponent(ComponentRenderable());
 		glm::vec3 colour(GenerateRandomNum(0, 1), GenerateRandomNum(0, 1), GenerateRandomNum(0, 1));
 		entity.AddComponent(ComponentMaterial(colour, colour, glm::vec3(1.0), 64.0f));
 		entityManager.AddEntity(entity);
-	}
+	}*/
 
 	for (int i = 0; i < 1; i++)
 	{
 		Entity entity("sphereBig");
-		ComponentRigidBody body = ComponentRigidBody(glm::vec3(0, 20, 0));
-		body.mass = 10000; body.scale = 10;
+		RigidBodySphere body = RigidBodySphere(glm::vec3(0, 20, 0), 5.f);
+		body.mass = 10000; 
 		entity.AddComponent(body);
 		entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Sphere));
 		entity.AddComponent(ComponentModel(std::string("models/primitives/icosphere/icosphere4.obj"), true, false));
@@ -60,8 +60,8 @@ void AddEntitiesToManager(EntityManager &entityManager)
 	for (int i = 0; i < 1; i++)
 	{
 		Entity entity("plane");
-		ComponentRigidBody body = ComponentRigidBody(glm::vec3(0, 0, 0));
-		body.mApplyGravity = false; body.mass = 1000000000000.f; body.scale = 100;
+		RigidBodyPlane body = RigidBodyPlane(glm::vec3(0, 0, 0), glm::vec3(0.f));
+		body.mApplyGravity = false; body.mass = 1000000000000.f;
 		entity.AddComponent(body);
 		entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Plane));
 		entity.AddComponent(ComponentModel(std::string("models/primitives/plane/plane.obj"), true, false));
@@ -74,8 +74,8 @@ void AddEntitiesToManager(EntityManager &entityManager)
 	for (int i = 0; i < 1; i++)
 	{
 		Entity entity("cylinder");
-		ComponentRigidBody body = ComponentRigidBody(glm::vec3(0, 0, 45));
-		body.mApplyGravity = false; body.mass = 1000000000000.f; body.scale = 1;
+		RigidBodyCylinder body = RigidBodyCylinder(glm::vec3(0, 0, 45), 1.f, 0.5f);
+		body.mApplyGravity = false; body.mass = 1000000000000.f;
 		entity.AddComponent(body);
 		//entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Plane));
 		entity.AddComponent(ComponentModel(std::string("models/primitives/cylinder/cylinder64.obj"), true, false));
