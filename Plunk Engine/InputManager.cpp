@@ -44,20 +44,20 @@ void InputManager::key_callback(GLFWwindow* window, int, int, int, int)
 	{
 		glfwSetWindowShouldClose(window, true);
 	}
-		
+
 	// CAMERA MOVEMENT
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		mSimulationInstance->mCamera.ProcessKeyboard(FORWARD, mSimulationInstance->mDeltaTime);
+		mSimulationInstance->mCamera.ProcessKeyboard(FORWARD, mSimulationInstance->mDeltaTime / mSimulationInstance->mTimeScaling);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		mSimulationInstance->mCamera.ProcessKeyboard(BACKWARD, mSimulationInstance->mDeltaTime);
+		mSimulationInstance->mCamera.ProcessKeyboard(BACKWARD, mSimulationInstance->mDeltaTime / mSimulationInstance->mTimeScaling);
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		mSimulationInstance->mCamera.ProcessKeyboard(LEFT, mSimulationInstance->mDeltaTime);
+		mSimulationInstance->mCamera.ProcessKeyboard(LEFT, mSimulationInstance->mDeltaTime / mSimulationInstance->mTimeScaling);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		mSimulationInstance->mCamera.ProcessKeyboard(RIGHT, mSimulationInstance->mDeltaTime);
+		mSimulationInstance->mCamera.ProcessKeyboard(RIGHT, mSimulationInstance->mDeltaTime / mSimulationInstance->mTimeScaling);
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-		mSimulationInstance->mCamera.ProcessKeyboard(UP, mSimulationInstance->mDeltaTime);
+		mSimulationInstance->mCamera.ProcessKeyboard(UP, mSimulationInstance->mDeltaTime / mSimulationInstance->mTimeScaling);
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-		mSimulationInstance->mCamera.ProcessKeyboard(DOWN, mSimulationInstance->mDeltaTime);
+		mSimulationInstance->mCamera.ProcessKeyboard(DOWN, mSimulationInstance->mDeltaTime / mSimulationInstance->mTimeScaling);
 
 	// Pause simulation
 	if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
