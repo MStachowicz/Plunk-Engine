@@ -110,27 +110,28 @@ bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSpher
 	if (distance <= 0)
 	{
 		// Reverse the plane normal if sphere is behind the plane
-		glm::dvec3 sphereToPlane(sphereRigidBody->position - planeRigidBody->position);
-		double dot = glm::dot(sphereToPlane, planeRigidBody->GetNormal());
+		glm::dvec3 planeToSphere(sphereRigidBody->position - planeRigidBody->position);
+		double dot = glm::dot(planeToSphere, planeRigidBody->GetNormal());
 		glm::dvec3 flippedPlaneNormal = planeRigidBody->GetNormal();
 		if (dot < 0)
 		{
 			flippedPlaneNormal *= -1;
 		}
 
-		double timeOfCollision = (-abs(sphereRigidBody->previousVelocity.y) +
-			glm::sqrt(glm::pow(9.81, 2.0) - (2 * 9.81 * abs(distance)))) / 9.81;
+		// Finding the time of impact from previous position and velocity
+		double displacement = glm::length(planeRigidBody->position - sphereRigidBody->previousPosition) - sphereRigidBody->mRadius;
+		double acceleration = 9.81;
+		double initialVelocity = abs(sphereRigidBody->previousVelocity.y);
+		// Solving quadratic for time of collision
+		double timeStepToCollision = abs((-initialVelocity + glm::sqrt(glm::pow(initialVelocity, 2.0) + (2 * acceleration * displacement)))
+			/ acceleration);
 
-
-		// Find how long ago (t) the collision occurred and move the sphere back that timestep
-		double t = abs(distance) / glm::length(sphereRigidBody->velocity);
-		sphereRigidBody->position = sphereRigidBody->position + (t * -sphereRigidBody->velocity);
-		sphereRigidBody->velocity = sphereRigidBody->velocity + (t * -(sphereRigidBody->velocity / sphereRigidBody->mass));
+		// Set the position and velocity to values at the point of collision
+		sphereRigidBody->position = sphereRigidBody->previousPosition + (timeStepToCollision * sphereRigidBody->previousVelocity);
+		sphereRigidBody->velocity = sphereRigidBody->previousVelocity + (glm::dvec3(0.0, -9.81, 0.0) * timeStepToCollision);
 
 		// how far along the normal of the plane from sphere = collision point
 		glm::dvec3 collisionPoint = sphereRigidBody->position - (flippedPlaneNormal * sphereRigidBody->mRadius);
-
-		double CollisionTime = mSimulationInstance->mSimulationTime - t;
 
 		// Collision response
 		glm::dvec3 relativeVelocity = sphereRigidBody->velocity - planeRigidBody->velocity;

@@ -27,15 +27,15 @@ void SystemPhysics::Tick(const std::shared_ptr<Entity> &entity)
 
 		// LINEAR DYNAMICS
 		//------------------------------------------------------------------------------------------------------
-		RigidBodyComponent->previousPosition = RigidBodyComponent->position;
-		UpdateBodyPosition(RigidBodyComponent->position, RigidBodyComponent->velocity, mSimulationInstance->mDeltaTime);
-
 		if (applyGravity)
 			if (RigidBodyComponent->mApplyGravity)
 			{
 				RigidBodyComponent->previousVelocity = RigidBodyComponent->velocity;
 				ApplyGravity(RigidBodyComponent->velocity, mSimulationInstance->mDeltaTime);
 			}
+
+		RigidBodyComponent->previousPosition = RigidBodyComponent->position;
+		UpdateBodyPosition(RigidBodyComponent->position, RigidBodyComponent->velocity, mSimulationInstance->mDeltaTime);
 	}
 }
 
