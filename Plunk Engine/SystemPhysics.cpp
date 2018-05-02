@@ -25,17 +25,20 @@ void SystemPhysics::Tick(const std::shared_ptr<Entity> &entity)
 		std::shared_ptr<ComponentRigidBody> RigidBodyComponent =
 			std::dynamic_pointer_cast<ComponentRigidBody> (entity->FindComponent(65536));
 
-		// LINEAR DYNAMICS
-		//------------------------------------------------------------------------------------------------------
-		if (applyGravity)
-			if (RigidBodyComponent->mApplyGravity)
-			{
-				RigidBodyComponent->previousVelocity = RigidBodyComponent->velocity;
-				ApplyGravity(RigidBodyComponent->velocity, mSimulationInstance->mDeltaTime);
-			}
+		if (RigidBodyComponent->GetState() == RigidBodyState::ACTIVE)
+		{
+			// LINEAR DYNAMICS
+			//------------------------------------------------------------------------------------------------------
+			if (applyGravity)
+				if (RigidBodyComponent->mApplyGravity)
+				{
+					RigidBodyComponent->previousVelocity = RigidBodyComponent->velocity;
+					ApplyGravity(RigidBodyComponent->velocity, mSimulationInstance->mDeltaTime);
+				}
 
-		RigidBodyComponent->previousPosition = RigidBodyComponent->position;
-		UpdateBodyPosition(RigidBodyComponent->position, RigidBodyComponent->velocity, mSimulationInstance->mDeltaTime);
+			RigidBodyComponent->previousPosition = RigidBodyComponent->position;
+			UpdateBodyPosition(RigidBodyComponent->position, RigidBodyComponent->velocity, mSimulationInstance->mDeltaTime);
+		}
 	}
 }
 

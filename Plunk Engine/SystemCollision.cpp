@@ -109,8 +109,15 @@ bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSpher
 	// If a collision is detected
 	if (distance <= 0)
 	{
+		// If the velocity is below the threshold the sphere is put to sleep
+		if (glm::length(sphereRigidBody->previousVelocity) < 0.01)
+		{
+			sphereRigidBody->ChangeState(RigidBodyState::SLEEPING);
+			return false;
+		}
+
 		// Reverse the plane normal if sphere is behind the plane
-		glm::dvec3 planeToSphere(sphereRigidBody->position - planeRigidBody->position);
+ 		glm::dvec3 planeToSphere(sphereRigidBody->position - planeRigidBody->position);
 		double dot = glm::dot(planeToSphere, planeRigidBody->GetNormal());
 		glm::dvec3 flippedPlaneNormal = planeRigidBody->GetNormal();
 		if (dot < 0)

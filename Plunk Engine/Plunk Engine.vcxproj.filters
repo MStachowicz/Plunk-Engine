@@ -178,6 +178,9 @@
     <ClInclude Include="SystemManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="IStateMachine.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Components">

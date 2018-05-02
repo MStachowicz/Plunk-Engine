@@ -203,6 +203,7 @@
     <ClInclude Include="ComponentTexture.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="IStateMachine.h" />
     <ClInclude Include="IComponent.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="ISystem.h" />

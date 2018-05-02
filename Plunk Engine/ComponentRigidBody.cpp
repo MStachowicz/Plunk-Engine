@@ -2,6 +2,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 ComponentRigidBody::ComponentRigidBody(const glm::dvec3& pPosition) :
+	IStateMachine(ACTIVE),
 	IComponent(IComponent::ComponentFlags::COMPONENT_RIGID_BODY),
 	position(pPosition),
 	velocity(0.),
@@ -19,17 +20,45 @@ const glm::dvec3 & ComponentRigidBody::GetScale() const
 	return scale;
 }
 
-const glm::dvec3 & ComponentRigidBody::GetRotation() const
+const glm::dvec3& ComponentRigidBody::GetRotation() const
 {
 	return mRotation;
 }
 
-void ComponentRigidBody::Rotate(const glm::dvec3 & pRotation)
+void ComponentRigidBody::Rotate(const glm::dvec3& pRotation)
 {
 	mRotation = pRotation;
 }
 
-
+void ComponentRigidBody::ChangeState(const RigidBodyState& pNewState)
+{
+	if (GetState() != pNewState)
+	{
+		switch (GetState())
+		{
+		case ACTIVE:
+			switch (pNewState)
+			{
+			case ACTIVE:
+				break;
+			case SLEEPING:
+				velocity = glm::dvec3(0.0, 0.0, 0.0);
+				mCurrentState = RigidBodyState::SLEEPING;
+				break;
+			}
+			break;
+		case SLEEPING:
+			switch (pNewState)
+			{
+			case ACTIVE:
+				break;
+			case SLEEPING:
+				break;
+			}
+			break;
+		}
+	}
+}
 
 // SPHERE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////

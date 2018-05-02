@@ -2,9 +2,15 @@
 #define COMPONENTRIGIDBODY_H
 
 #include "IComponent.h"
+#include "IStateMachine.h"
 #include <glm/glm.hpp>
 
-class ComponentRigidBody : public IComponent
+enum RigidBodyState
+{
+	ACTIVE, SLEEPING
+};
+
+class ComponentRigidBody : public IComponent, public IStateMachine<RigidBodyState>
 {
 public:
 	ComponentRigidBody(const glm::dvec3& pPosition);
@@ -20,6 +26,8 @@ public:
 	virtual const glm::dvec3& GetScale() const;
 	virtual const glm::dvec3& GetRotation() const;
 	virtual void Rotate(const glm::dvec3& pRotation);
+
+	void ChangeState(const RigidBodyState& pNewState);
 
 protected:
 	glm::dvec3 mRotation; // Current rotation of the body
