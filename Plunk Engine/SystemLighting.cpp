@@ -68,9 +68,14 @@ void SystemLighting::Tick(const std::shared_ptr<Entity> &entity)
 		{
 			std::shared_ptr<ComponentDirectionalLight> directionLightComp = std::dynamic_pointer_cast<ComponentDirectionalLight> (entity->FindComponent(4));
 
-			float radius = 30, angle = glfwGetTime() / 15;
+			float radius = 30, angle = glfwGetTime() / 2;
 			float x = radius * glm::cos(angle);
 			float y = radius * glm::sin(angle);
+
+			if (y < 0)
+			{
+				y *= -1;
+			}
 
 			glm::vec3 sunPosition(x, y, 0.0f);
 			glm::vec3 sunDirection = glm::normalize(glm::vec3(0.0f) - sunPosition);
