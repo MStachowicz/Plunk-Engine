@@ -46,14 +46,14 @@ void AddEntitiesToManager(EntityManager &entityManager)
 	for (int i = 0; i < 1; i++)
 	{
 		Entity entity("sphereBig");
-		RigidBodySphere body = RigidBodySphere(glm::vec3(0, 20, 0), 8.f);
-		body.mass = 1000; 
+		RigidBodySphere body = RigidBodySphere(glm::vec3(0, 40, 0), 8.f);
+		body.mass = 10000; 
 		body.mApplyGravity = true;
 		//body.velocity = glm::vec3(1.f, 0.f, 0.f);
 
 		entity.AddComponent(body);
 		entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Sphere));
-		entity.AddComponent(ComponentModel(std::string("models/primitives/icosphere/icosphere6.obj"), true, false));
+		entity.AddComponent(ComponentModel(std::string("models/primitives/icosphere/icosphere5.obj"), true, false));
 		entity.AddComponent(ComponentRenderable());
 		glm::vec3 colour(GenerateRandomNum(0, 1), GenerateRandomNum(0, 1), GenerateRandomNum(0, 1));
 		entity.AddComponent(ComponentMaterial(colour, colour, glm::vec3(1.0), 64.0f));
