@@ -5,6 +5,7 @@
 
 class Simulation;
 struct GLFWwindow;
+enum Camera_Movement;
 
 class InputManager
 {
@@ -18,6 +19,7 @@ public:
 	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 	static void key_callback(GLFWwindow* window, int, int, int, int);
 
+	static const void MoveCamera(GLFWwindow* window, const Camera_Movement& pMovement);
 	const void setInputCallbacks(GLFWwindow *const pWindow, Simulation* pSimulation);
 private:
 	static bool mFirstMouseMovement;

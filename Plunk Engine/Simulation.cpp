@@ -31,7 +31,7 @@ void AddEntitiesToManager(EntityManager &entityManager)
 	colours.insert(std::pair<string, glm::vec3>("Orange", glm::vec3(255, 127, 0)));
 	colours.insert(std::pair<string, glm::vec3>("Red", glm::vec3(255, 0, 0)));
 
-	for (int i = 0; i < 25; i++)
+	/*for (int i = 0; i < 25; i++)
 	{
 		Entity entity("sphere");
 		entity.AddComponent(RigidBodySphere(glm::vec3(GenerateRandomNum(-8, 8), GenerateRandomNum(3, 10), GenerateRandomNum(-8, 8)), 0.5f));
@@ -41,13 +41,13 @@ void AddEntitiesToManager(EntityManager &entityManager)
 		glm::vec3 colour(GenerateRandomNum(0, 1), GenerateRandomNum(0, 1), GenerateRandomNum(0, 1));
 		entity.AddComponent(ComponentMaterial(colour, colour, glm::vec3(1.0), 64.0f));
 		entityManager.AddEntity(entity);
-	}
+	}*/
 
 	for (int i = 0; i < 1; i++)
 	{
 		Entity entity("sphereBig");
-		RigidBodySphere body = RigidBodySphere(glm::vec3(0, 40, 0), 8.f);
-		body.mass = 10000; 
+		RigidBodySphere body = RigidBodySphere(glm::vec3(0, 0.5, 0), 0.5f);
+		body.mass = 1; 
 		body.mApplyGravity = true;
 		//body.velocity = glm::vec3(1.f, 0.f, 0.f);
 
@@ -113,7 +113,9 @@ Simulation::Simulation(GLFWwindow *const pWindow, const glm::vec3& pStartingPosi
 	mLastFrame(0.),
 	mTimeScaling(1.0),
 	mSimulationTime(0.),
-	mSimulationPaused(false)
+	mSimulationPaused(false),
+	mRestitutionCoefficient(0.2f),
+	scrollWheelSensitivity(0.1f)
 {
 	systemManager.AddSystem(systemPhysics);
 	systemManager.AddSystem(systemCollision);
@@ -124,6 +126,8 @@ Simulation::Simulation(GLFWwindow *const pWindow, const glm::vec3& pStartingPosi
 	inputManager.setInputCallbacks(pWindow, this);
 	AddEntitiesToManager(entityManager);
 	systemManager.LoadSystems(entityManager, this);
+
+	TogglePauseSimulation();
 }
 
 Simulation::~Simulation()
@@ -155,6 +159,7 @@ void Simulation::TogglePauseSimulation()
 		systemCollision.mRunning = true;
 
 		mSimulationPaused = false;
+		cout << "Simulation unpaused" << endl;
 	}
 	else
 	{
@@ -162,20 +167,44 @@ void Simulation::TogglePauseSimulation()
 		systemCollision.mRunning = false;
 
 		mSimulationPaused = true;
+		cout << "Simulation paused" << endl;
 	}
 }
 
 void Simulation::ChangeTimeScaling(double &pAmount)
 {
-	pAmount *= 0.2;
+	pAmount *= scrollWheelSensitivity;
 	mTimeScaling += pAmount;
 
 	if (mTimeScaling < 0.1)
 	{
 		mTimeScaling = 0.1;
+		return;
 	}
 	else if (mTimeScaling > 1)
 	{
 		mTimeScaling = 1;
+		return;
 	}
+
+	cout << "Time scaling changed to = " << mTimeScaling << endl;
+}
+
+void Simulation::ChangeRestitution(double & pAmount)
+{
+	pAmount *= scrollWheelSensitivity;
+	mRestitutionCoefficient += pAmount;
+
+	if (mRestitutionCoefficient < 0.1f)
+	{
+		mRestitutionCoefficient = 0.1f;
+		return;
+	}
+	else if (mRestitutionCoefficient > 1.5f)
+	{
+		mRestitutionCoefficient = 1.5f;
+		return;
+	}
+
+	cout << "Restitution changed to = " << mRestitutionCoefficient << endl;
 }

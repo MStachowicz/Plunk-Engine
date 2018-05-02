@@ -78,11 +78,9 @@ bool SystemCollision::CollisionSphereSphere(const std::shared_ptr<Entity>& pSphe
 		glm::vec3 relativeVelocity = sphereRigidBody->velocity - sphere2RigidBody->velocity;
 		glm::vec3 collisionNormal = sphereRigidBody->position - (sphereRigidBody->position + glm::normalize(sphere1toSphere2) * sphereRigidBody->mRadius);
 
-		float restitution = 1.0f;
-
 		if (glm::dot(relativeVelocity, collisionNormal) < 0)
 		{
-			float impulseMagnitude = glm::dot((-1 * (1 + restitution) * relativeVelocity), collisionNormal) /
+			float impulseMagnitude = glm::dot((-1 * (1 + mSimulationInstance->mRestitutionCoefficient) * relativeVelocity), collisionNormal) /
 				glm::dot(collisionNormal, (collisionNormal * ((1 / sphereRigidBody->mass) + (1 / sphere2RigidBody->mass))));
 
 			// Apply an instant change in momentum/velocity using the calculated impulse
@@ -124,6 +122,7 @@ bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSpher
 		// Find how long ago (t) the collision occurred and move the sphere back that timestep
 		float t = abs(distance) / glm::length(sphereRigidBody->velocity);
 		sphereRigidBody->position = sphereRigidBody->position + (t * -sphereRigidBody->velocity);
+		sphereRigidBody->velocity = sphereRigidBody->velocity + (t * -(sphereRigidBody->velocity / sphereRigidBody->mass));
 
 		// how far along the normal of the plane from sphere = collision point
 		glm::vec3 collisionPoint = sphereRigidBody->position - (flippedPlaneNormal * sphereRigidBody->mRadius);
@@ -133,9 +132,7 @@ bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSpher
 		glm::vec3 relativeVelocity = sphereRigidBody->velocity - planeRigidBody->velocity;
 		glm::vec3 collisionNormal = glm::normalize(sphereRigidBody->position - collisionPoint);
 
-		float restitution = 1.0f;
-
-		float impulseMagnitude = glm::dot((-1 * (1 + restitution) * relativeVelocity), collisionNormal) /
+		float impulseMagnitude = glm::dot((-1 * (1 + mSimulationInstance->mRestitutionCoefficient) * relativeVelocity), collisionNormal) /
 			glm::dot(collisionNormal, (collisionNormal * ((1 / sphereRigidBody->mass) + (1 / planeRigidBody->mass))));
 
 		if (glm::dot(relativeVelocity, collisionNormal) < 0)

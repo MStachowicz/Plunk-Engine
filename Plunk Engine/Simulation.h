@@ -37,12 +37,15 @@ public:
 	double mCurrentFrame; // Time the current frame started at.
 	double mLastFrame; // Time the last frame started at.
 	double mDeltaTime; // Amount of time between the current and last frame.
+	float mRestitutionCoefficient; // Ratio of the final relative velocity after collision of bodies.
 
 	void Run();
 	void TogglePauseSimulation();
 	void ChangeTimeScaling(double &pAmount);
+	void ChangeRestitution(double &pAmount);
 
 private:
 	bool mSimulationPaused;
+	double scrollWheelSensitivity; // The scale value when scrollwheel input is registered.
 };
 #endif
