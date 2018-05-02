@@ -52,7 +52,7 @@ void SystemCollision::Tick(const std::shared_ptr<Entity>& entity)
 						{
 							// SPHERE V PLANE CHECK
 							// --------------------------------------------------------------------------------------------------
-							//CollisionSpherePlane(entity, mSimulationInstance->entityManager.entityList[i]);
+							CollisionSpherePlane(entity, mSimulationInstance->entityManager.entityList[i]);
 							break;
 						}
 						}

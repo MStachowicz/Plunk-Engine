@@ -17,7 +17,7 @@
 class Simulation
 {
 public:
-	Simulation(GLFWwindow *const window);
+	Simulation(GLFWwindow *const window, const glm::vec3& pStartingPosition);
 	~Simulation();
 
 	EntityManager entityManager;
