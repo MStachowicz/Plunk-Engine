@@ -37,7 +37,7 @@ public:
 	double mCurrentFrame; // Time the current frame started at.
 	double mLastFrame; // Time the last frame started at.
 	double mDeltaTime; // Amount of time between the current and last frame.
-	float mRestitutionCoefficient; // Ratio of the final relative velocity after collision of bodies.
+	double mRestitutionCoefficient; // Ratio of the final relative velocity after collision of bodies.
 
 	void Run();
 	void TogglePauseSimulation();

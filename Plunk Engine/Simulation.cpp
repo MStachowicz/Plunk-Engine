@@ -46,7 +46,7 @@ void AddEntitiesToManager(EntityManager &entityManager)
 	for (int i = 0; i < 1; i++)
 	{
 		Entity entity("sphereBig");
-		RigidBodySphere body = RigidBodySphere(glm::vec3(0, 0.5, 0), 0.5f);
+		RigidBodySphere body = RigidBodySphere(glm::vec3(0, 5, 0), 0.5f);
 		body.mass = 1; 
 		body.mApplyGravity = true;
 		//body.velocity = glm::vec3(1.f, 0.f, 0.f);
@@ -114,7 +114,7 @@ Simulation::Simulation(GLFWwindow *const pWindow, const glm::vec3& pStartingPosi
 	mTimeScaling(1.0),
 	mSimulationTime(0.),
 	mSimulationPaused(false),
-	mRestitutionCoefficient(0.2f),
+	mRestitutionCoefficient(0.6f),
 	scrollWheelSensitivity(0.1f)
 {
 	systemManager.AddSystem(systemPhysics);
@@ -127,7 +127,7 @@ Simulation::Simulation(GLFWwindow *const pWindow, const glm::vec3& pStartingPosi
 	AddEntitiesToManager(entityManager);
 	systemManager.LoadSystems(entityManager, this);
 
-	TogglePauseSimulation();
+	//TogglePauseSimulation();
 }
 
 Simulation::~Simulation()
@@ -176,9 +176,9 @@ void Simulation::ChangeTimeScaling(double &pAmount)
 	pAmount *= scrollWheelSensitivity;
 	mTimeScaling += pAmount;
 
-	if (mTimeScaling < 0.1)
+	if (mTimeScaling < 0.1f)
 	{
-		mTimeScaling = 0.1;
+		mTimeScaling = 0.1f;
 		return;
 	}
 	else if (mTimeScaling > 1)

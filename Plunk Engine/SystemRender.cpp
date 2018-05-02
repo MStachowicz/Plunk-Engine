@@ -43,17 +43,17 @@ void SystemRender::Tick(const std::shared_ptr<Entity> &entity)
 
 
 					// Setting the model matrix of the entity
-					glm::mat4 model = glm::mat4(1.0f);
+					glm::dmat4 model = glm::dmat4(1.0f);
 					model = glm::translate(model, RigidBodyComponent->position);
 
 					// Apply rotation
-					model = glm::rotate(model, glm::radians(RigidBodyComponent->GetRotation().x), glm::vec3(1.0f, 0.0f, 0.0f));
-					model = glm::rotate(model, glm::radians(RigidBodyComponent->GetRotation().y), glm::vec3(0.0f, 1.0f, 0.0f));
-					model = glm::rotate(model, glm::radians(RigidBodyComponent->GetRotation().z), glm::vec3(0.0f, 0.0f, 1.0f));
+					model = glm::rotate(model, glm::radians(RigidBodyComponent->GetRotation().x), glm::dvec3(1.0f, 0.0f, 0.0f));
+					model = glm::rotate(model, glm::radians(RigidBodyComponent->GetRotation().y), glm::dvec3(0.0f, 1.0f, 0.0f));
+					model = glm::rotate(model, glm::radians(RigidBodyComponent->GetRotation().z), glm::dvec3(0.0f, 0.0f, 1.0f));
 
 					glm::vec3 scale = RigidBodyComponent->GetScale();
 
-					model = glm::scale(model, glm::vec3(RigidBodyComponent->GetScale()));
+					model = glm::scale(model, glm::dvec3(RigidBodyComponent->GetScale()));
 
 					shader->setMat4("model", model);
 

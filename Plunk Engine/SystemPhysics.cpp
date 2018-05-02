@@ -36,12 +36,12 @@ void SystemPhysics::Tick(const std::shared_ptr<Entity> &entity)
 }
 
 // Performs the Euler integration to find the position of the body after a timestep forward.
-void SystemPhysics::UpdateBodyPosition(glm::vec3 &pPosition, glm::vec3 &pVelocity, float tickDeltaTime)
+void SystemPhysics::UpdateBodyPosition(glm::dvec3 &pPosition, glm::dvec3 &pVelocity, double tickDeltaTime)
 {
 	pPosition = pPosition + (tickDeltaTime * pVelocity);
 }
 
-void SystemPhysics::ApplyGravity(glm::vec3& pVelocity, const float& tickDeltaTime)
+void SystemPhysics::ApplyGravity(glm::dvec3& pVelocity, const double& tickDeltaTime)
 {
-	pVelocity = pVelocity + (tickDeltaTime * glm::vec3(0.0f, -9.81f, 0.0f));
+	pVelocity = pVelocity + (tickDeltaTime * glm::dvec3(0.0f, -9.81f, 0.0f));
 }

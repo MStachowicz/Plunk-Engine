@@ -25,6 +25,6 @@ public:
 private:
 	bool CollisionSpherePlane(const std::shared_ptr<Entity> &pSphereEntity, const std::shared_ptr<Entity> &pCubeEntity);
 	bool CollisionSphereSphere(const std::shared_ptr<Entity> &pSphereEntity, const std::shared_ptr<Entity> &pSphereEntity2);
-	glm::vec3 PlaneToPoint(const glm::vec3 &pPlaneNormal, const glm::vec3 &pPlanePosition, glm::vec3& pPoint);
+	glm::dvec3 PlaneToPoint(const glm::dvec3 &pPlaneNormal, const glm::dvec3 &pPlanePosition, glm::dvec3& pPoint);
 };
 #endif

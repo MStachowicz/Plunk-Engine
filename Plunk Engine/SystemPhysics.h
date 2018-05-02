@@ -26,8 +26,8 @@ public:
 	void OnTickStart(const std::shared_ptr<Entity> &entity);
 	void Tick(const std::shared_ptr<Entity> &entity);
 
-	void UpdateBodyPosition(glm::vec3 &pPosition, glm::vec3 &pVelocity, float tickDeltaTime);
-	void UpdateBodyVelocity(glm::vec3 &pVelocity, glm::vec3 &resultantForce, const float &pMass, const float &tickDeltaTime);
-	void ApplyGravity(glm::vec3 & pVelocity, const float &tickDeltaTime);
+	void UpdateBodyPosition(glm::dvec3 &pPosition, glm::dvec3 &pVelocity, double tickDeltaTime);
+	void UpdateBodyVelocity(glm::dvec3 &pVelocity, glm::dvec3 &resultantForce, const double &pMass, const double &tickDeltaTime);
+	void ApplyGravity(glm::dvec3 & pVelocity, const double &tickDeltaTime);
 };
 #endif

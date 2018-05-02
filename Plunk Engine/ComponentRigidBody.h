@@ -7,21 +7,21 @@
 class ComponentRigidBody : public IComponent
 {
 public:
-	ComponentRigidBody(const glm::vec3& pPosition);
+	ComponentRigidBody(const glm::dvec3& pPosition);
 	~ComponentRigidBody();
 
-	glm::vec3 position; // Current position of the body
-	glm::vec3 velocity; // Current velocity of the body
-	float mass; // Mass of the body
+	glm::dvec3 position; // Current position of the body
+	glm::dvec3 velocity; // Current velocity of the body
+	double mass; // Mass of the body
 	bool mApplyGravity;
 
-	virtual const glm::vec3& GetScale() const;
-	virtual const glm::vec3& GetRotation() const;
-	virtual void Rotate(const glm::vec3& pRotation);
+	virtual const glm::dvec3& GetScale() const;
+	virtual const glm::dvec3& GetRotation() const;
+	virtual void Rotate(const glm::dvec3& pRotation);
 
 protected:
-	glm::vec3 mRotation; // Current rotation of the body
-	glm::vec3 scale; // Scale of the body
+	glm::dvec3 mRotation; // Current rotation of the body
+	glm::dvec3 scale; // Scale of the body
 };
 
 // DERIVED RIGID BODIES
@@ -30,34 +30,34 @@ protected:
 class RigidBodySphere : public ComponentRigidBody
 {
 public:
-	RigidBodySphere(const glm::vec3& pStartingPosition, const float& pRadius);
+	RigidBodySphere(const glm::dvec3& pStartingPosition, const double& pRadius);
 
-	float mRadius;
+	double mRadius;
 
-	const glm::vec3& GetScale() const;
+	const glm::dvec3& GetScale() const;
 };
 
 class RigidBodyPlane : public ComponentRigidBody
 {
 public:
-	RigidBodyPlane(const glm::vec3& pStartingPosition, const glm::vec3& pRotation);
+	RigidBodyPlane(const glm::dvec3& pStartingPosition, const glm::dvec3& pRotation);
 
-	const glm::vec3& GetNormal() const;
-	void Rotate(const glm::vec3& pRotation);
+	const glm::dvec3& GetNormal() const;
+	void Rotate(const glm::dvec3& pRotation);
 
 private:
-	glm::vec3 mNormal;
+	glm::dvec3 mNormal;
 };
 
 class RigidBodyCylinder : public ComponentRigidBody
 {
 public:
-	RigidBodyCylinder(const glm::vec3& pStartingPosition, const float& pLength, const float& pRadius);
+	RigidBodyCylinder(const glm::dvec3& pStartingPosition, const double& pLength, const double& pRadius);
 
-	float mLength;
-	float mRadius;
+	double mLength;
+	double mRadius;
 
-	const glm::vec3& GetScale() const;
+	const glm::dvec3& GetScale() const;
 };
 
 #endif
