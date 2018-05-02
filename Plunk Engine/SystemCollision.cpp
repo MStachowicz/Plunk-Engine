@@ -118,6 +118,9 @@ bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSpher
 			flippedPlaneNormal *= -1;
 		}
 
+		double timeOfCollision = (-abs(sphereRigidBody->previousVelocity.y) +
+			glm::sqrt(glm::pow(9.81, 2.0) - (2 * 9.81 * abs(distance)))) / 9.81;
+
 
 		// Find how long ago (t) the collision occurred and move the sphere back that timestep
 		double t = abs(distance) / glm::length(sphereRigidBody->velocity);
@@ -127,6 +130,7 @@ bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSpher
 		// how far along the normal of the plane from sphere = collision point
 		glm::dvec3 collisionPoint = sphereRigidBody->position - (flippedPlaneNormal * sphereRigidBody->mRadius);
 
+		double CollisionTime = mSimulationInstance->mSimulationTime - t;
 
 		// Collision response
 		glm::dvec3 relativeVelocity = sphereRigidBody->velocity - planeRigidBody->velocity;

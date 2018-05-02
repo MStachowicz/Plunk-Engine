@@ -10,8 +10,10 @@ public:
 	ComponentRigidBody(const glm::dvec3& pPosition);
 	~ComponentRigidBody();
 
-	glm::dvec3 position; // Current position of the body
-	glm::dvec3 velocity; // Current velocity of the body
+	glm::dvec3 position; // Position of the body at this timestep.
+	glm::dvec3 velocity; // Velocity of the body at this timestep.
+	glm::dvec3 previousVelocity; // Velocity of the body at the previous timestep.
+	glm::dvec3 previousPosition; // Position of the body at the previous timestep.
 	double mass; // Mass of the body
 	bool mApplyGravity;
 

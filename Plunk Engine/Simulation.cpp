@@ -46,8 +46,8 @@ void AddEntitiesToManager(EntityManager &entityManager)
 	for (int i = 0; i < 1; i++)
 	{
 		Entity entity("sphereBig");
-		RigidBodySphere body = RigidBodySphere(glm::vec3(0, 5, 0), 0.5f);
-		body.mass = 1; 
+		RigidBodySphere body = RigidBodySphere(glm::vec3(0, 9.81f + 0.5f, 0), 0.5f);
+		body.mass = 1;
 		body.mApplyGravity = true;
 		//body.velocity = glm::vec3(1.f, 0.f, 0.f);
 
@@ -64,7 +64,7 @@ void AddEntitiesToManager(EntityManager &entityManager)
 	{
 		Entity entity("cylinder");
 		RigidBodyCylinder body = RigidBodyCylinder(glm::vec3(2, 1.f, -20), 2.f, 0.5f);
-		body.mApplyGravity = false; 
+		body.mApplyGravity = false;
 		body.mass = 1000000000000.f;
 
 		entity.AddComponent(body);
@@ -85,7 +85,7 @@ void AddEntitiesToManager(EntityManager &entityManager)
 	{
 		Entity entity("plane");
 		RigidBodyPlane body = RigidBodyPlane(glm::vec3(0, 0, 0), glm::vec3(0.f));
-		body.mApplyGravity = false; 
+		body.mApplyGravity = false;
 		body.mass = 1000000000000.f;
 
 		entity.AddComponent(body);
@@ -127,7 +127,7 @@ Simulation::Simulation(GLFWwindow *const pWindow, const glm::vec3& pStartingPosi
 	AddEntitiesToManager(entityManager);
 	systemManager.LoadSystems(entityManager, this);
 
-	//TogglePauseSimulation();
+	TogglePauseSimulation();
 }
 
 Simulation::~Simulation()
@@ -139,7 +139,6 @@ void Simulation::Run()
 	mCurrentFrame = glfwGetTime();
 	mDeltaTime = mCurrentFrame - mLastFrame;
 	mLastFrame = mCurrentFrame;
-	mSimulationTime += mDeltaTime;
 
 	if (mDeltaTime > 1.f)
 	{
@@ -147,6 +146,11 @@ void Simulation::Run()
 	}
 
 	mDeltaTime *= mTimeScaling;
+
+	if (!mSimulationPaused)
+	{
+		mSimulationTime += mDeltaTime;
+	}
 
 	systemManager.ActionSystems(entityManager);
 }
