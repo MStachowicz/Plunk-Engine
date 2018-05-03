@@ -64,7 +64,29 @@ void SystemCollision::Tick(const std::shared_ptr<Entity>& entity)
 	}
 }
 
+// Performs the collision response between two rigid bodies.
+void SystemCollision::CollisionResponse(const std::shared_ptr<ComponentRigidBody>& pCollider, const std::shared_ptr<ComponentRigidBody>& pColliding, const glm::dvec3 & pCollisionPoint)
+{
+	glm::dvec3 relativeVelocity = pCollider->velocity - pColliding->velocity;
+	glm::dvec3 collisionNormal = glm::normalize(pCollider->position - pCollisionPoint);
 
+	// If the relative velocity is pointing away from the normal perform the response
+	if (glm::dot(relativeVelocity, collisionNormal) < 0)
+	{
+		double impulseMagnitude = glm::dot((-1 * (1 + mSimulationInstance->mRestitutionCoefficient) * relativeVelocity), collisionNormal) /
+			glm::dot(collisionNormal, (collisionNormal * ((1 / pCollider->mass) + (1 / pColliding->mass))));
+
+		// Apply an instant change in momentum/velocity using the calculated impulse
+		pCollider->velocity = pCollider->velocity + ((impulseMagnitude / pCollider->mass) * collisionNormal);
+		pColliding->velocity = pColliding->velocity - ((impulseMagnitude / pColliding->mass) * collisionNormal);
+	}
+	else
+	{
+		std::cout << "SYSTEMCOLLISION::COLLISIONRESPONSE::ERROR Collision registered during object penetration (ignored)." << std::endl;
+	}
+}
+
+// Checks for a collision between two moving spheres (performs the collision response upon detection).
 bool SystemCollision::CollisionSphereSphere(const std::shared_ptr<Entity>& pSphereEntity, const std::shared_ptr<Entity>& pSphere2Entity)
 {
 	std::shared_ptr<RigidBodySphere> sphereRigidBody = std::dynamic_pointer_cast<RigidBodySphere> (pSphereEntity->FindComponent(65536));
@@ -75,38 +97,27 @@ bool SystemCollision::CollisionSphereSphere(const std::shared_ptr<Entity>& pSphe
 
 	if (distance < 0)
 	{
-		glm::dvec3 relativeVelocity = sphereRigidBody->velocity - sphere2RigidBody->velocity;
-		glm::dvec3 collisionNormal = sphereRigidBody->position - (sphereRigidBody->position + glm::normalize(sphere1toSphere2) * sphereRigidBody->mRadius);
-
-		if (glm::dot(relativeVelocity, collisionNormal) < 0)
-		{
-			double impulseMagnitude = glm::dot((-1 * (1 + mSimulationInstance->mRestitutionCoefficient) * relativeVelocity), collisionNormal) /
-				glm::dot(collisionNormal, (collisionNormal * ((1 / sphereRigidBody->mass) + (1 / sphere2RigidBody->mass))));
-
-			// Apply an instant change in momentum/velocity using the calculated impulse
-			sphereRigidBody->velocity = sphereRigidBody->velocity + ((impulseMagnitude / sphereRigidBody->mass) * collisionNormal);
-			sphere2RigidBody->velocity = sphere2RigidBody->velocity - ((impulseMagnitude / sphere2RigidBody->mass) * collisionNormal);
-
-			return true;
-		}
+		glm::dvec3 collisionPoint = sphereRigidBody->position + glm::normalize(sphere1toSphere2) * sphereRigidBody->mRadius;
+		CollisionResponse(sphereRigidBody, sphere2RigidBody, collisionPoint);
+		return true;
 	}
 
 	return false;
 }
 
-// Finds the magnitude of the vector between the sphere and the closest point on a plane comparing it to the sphere radius.
+// Checks for a collision between a moving sphere and a static plane (performs the collision response upon detection).
 bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSphereEntity, const std::shared_ptr<Entity> &pPlaneEntity)
 {
 	std::shared_ptr<RigidBodySphere> sphereRigidBody = std::dynamic_pointer_cast<RigidBodySphere> (pSphereEntity->FindComponent(65536));
 	std::shared_ptr<RigidBodyPlane> planeRigidBody = std::dynamic_pointer_cast<RigidBodyPlane> (pPlaneEntity->FindComponent(65536));
 
-	glm::dvec3 sphereToClosestPoint = PlaneToPoint(planeRigidBody->GetNormal(), planeRigidBody->position, sphereRigidBody->position) - sphereRigidBody->position;
+	// Finding the distance between the closest point on the plane to the closest point on the sphere. 
+	// The point on the plane closest to the sphere, also the collision point if they overlap.
+	glm::dvec3 clsPtPlane = ClosestPointOnPlane(planeRigidBody, sphereRigidBody->position);
+	glm::dvec3 clsPtSphere = ClosestPointOnSphere(sphereRigidBody->position, sphereRigidBody->mRadius, clsPtPlane);
+	double distance = DistancePointToPlane(planeRigidBody, clsPtSphere);
 
-	// The signed distance from the sphere center to the closest point on the plane
-	double distance = glm::length(sphereToClosestPoint);
-	distance -= sphereRigidBody->mRadius;
-
-	// If a collision is detected
+	// If the sphere overlaps the plane the distance is negative
 	if (distance <= 0)
 	{
 		// If the velocity is below the threshold the sphere is put to sleep
@@ -116,8 +127,8 @@ bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSpher
 			return false;
 		}
 
-		// Reverse the plane normal if sphere is behind the plane
- 		glm::dvec3 planeToSphere(sphereRigidBody->position - planeRigidBody->position);
+		// 1. Check which side of the plane the sphere is on. Flip the normal if behind the plane.
+		glm::dvec3 planeToSphere = sphereRigidBody->position - planeRigidBody->position;
 		double dot = glm::dot(planeToSphere, planeRigidBody->GetNormal());
 		glm::dvec3 flippedPlaneNormal = planeRigidBody->GetNormal();
 		if (dot < 0)
@@ -125,44 +136,69 @@ bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSpher
 			flippedPlaneNormal *= -1;
 		}
 
-		// Finding the time of impact from previous position and velocity
-		double displacement = glm::length(planeRigidBody->position - sphereRigidBody->previousPosition) - sphereRigidBody->mRadius;
+		// 2. Find the time to collision from the previous position and changing velocity.
+		// Find the previous distance
+		glm::dvec3 previousClsPtPlane = ClosestPointOnPlane(planeRigidBody, sphereRigidBody->previousPosition);
+		glm::dvec3 previousClsPtSphere = ClosestPointOnSphere(sphereRigidBody->previousPosition, sphereRigidBody->mRadius, previousClsPtPlane);
+
+		double previousDistance = DistancePointToPlane(planeRigidBody, previousClsPtSphere);
 		double acceleration = 9.81;
-		double initialVelocity = abs(sphereRigidBody->previousVelocity.y);
-		// Solving quadratic for time of collision
-		double timeStepToCollision = abs((-initialVelocity + glm::sqrt(glm::pow(initialVelocity, 2.0) + (2 * acceleration * displacement)))
+		double initialVelocity = abs(sphereRigidBody->previousVelocity.y); // Only the y component of initial velocity is used as gravity is the only accelerant.
+		// Solving quadratic equation for time to collision from the previous position and initial velocity.
+		double timeStepToCollision = abs((-initialVelocity + glm::sqrt(glm::pow(initialVelocity, 2.0) + (2 * acceleration * previousDistance)))
 			/ acceleration);
 
 		// Set the position and velocity to values at the point of collision
 		sphereRigidBody->position = sphereRigidBody->previousPosition + (timeStepToCollision * sphereRigidBody->previousVelocity);
 		sphereRigidBody->velocity = sphereRigidBody->previousVelocity + (glm::dvec3(0.0, -9.81, 0.0) * timeStepToCollision);
 
-		// how far along the normal of the plane from sphere = collision point
-		glm::dvec3 collisionPoint = sphereRigidBody->position - (flippedPlaneNormal * sphereRigidBody->mRadius);
 
-		// Collision response
-		glm::dvec3 relativeVelocity = sphereRigidBody->velocity - planeRigidBody->velocity;
-		glm::dvec3 collisionNormal = glm::normalize(sphereRigidBody->position - collisionPoint);
-
-		double impulseMagnitude = glm::dot((-1 * (1 + mSimulationInstance->mRestitutionCoefficient) * relativeVelocity), collisionNormal) /
-			glm::dot(collisionNormal, (collisionNormal * ((1 / sphereRigidBody->mass) + (1 / planeRigidBody->mass))));
-
-		if (glm::dot(relativeVelocity, collisionNormal) < 0)
-		{
-			sphereRigidBody->velocity = sphereRigidBody->velocity + ((impulseMagnitude / sphereRigidBody->mass) * collisionNormal);
-			planeRigidBody->velocity = planeRigidBody->velocity - ((impulseMagnitude / planeRigidBody->mass) * collisionNormal);
-		}
-
+		// 3. Perform collision response
+		CollisionResponse(sphereRigidBody, planeRigidBody, clsPtPlane);
 		return true;
 	}
 	else
 		return false;
 }
-// Returns the shortest vector from the plane to the point. (pg 165 collision detection)
-glm::dvec3 SystemCollision::PlaneToPoint(const glm::dvec3 &pPlaneNormal, const glm::dvec3 &pPlanePosition, glm::dvec3& pPoint)
-{
-	double pointToPlaneDistance = glm::dot((pPoint - pPlanePosition), pPlaneNormal);
 
-	// calculates how many units of plane normal length equal the point
-	return glm::dvec3(pPoint - (pointToPlaneDistance * pPlaneNormal));
+// UTILITY FUNCTIONS
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Returns the closest point on the plane to a point.
+glm::dvec3 SystemCollision::ClosestPointOnPlane(const std::shared_ptr<RigidBodyPlane>& plane, const glm::dvec3 & pPoint)
+{
+	double distance = glm::dot(plane->position, plane->GetNormal());
+	glm::dvec3 point = pPoint + ((distance - glm::dot(pPoint, plane->GetNormal())) * plane->GetNormal());
+	return point;
+}
+
+// Returns the signed distance from a point to the plane.
+double SystemCollision::DistancePointToPlane(const std::shared_ptr<RigidBodyPlane>& plane, const glm::dvec3 & pPoint)
+{
+	double pointToPlaneDistance = glm::dot((pPoint - plane->position), plane->GetNormal());
+	return pointToPlaneDistance;
+}
+
+// Returns the closest point on a sphere to a point (not signed).
+glm::dvec3 SystemCollision::ClosestPointOnSphere(const std::shared_ptr<RigidBodySphere>& pSphere, const glm::dvec3 & pPoint)
+{
+	glm::dvec3 pointToSphereCenter = pSphere->position - pPoint;
+	// Scale the vector from the point to sphere center by the radius.
+	glm::dvec3 pointToSphereSurface = pointToSphereCenter * ((glm::length(pointToSphereCenter) - pSphere->mRadius) / glm::length(pointToSphereCenter));
+	// Project the displacement onto the sphere
+	glm::dvec3 point = pPoint + pointToSphereCenter;
+
+	return point;
+}
+
+// Returns the closest point on a sphere to a point (not signed).
+glm::dvec3 SystemCollision::ClosestPointOnSphere(const glm::dvec3 & pSphereCenter, const double & pSphereRadius, const glm::dvec3 & pPoint)
+{
+	glm::dvec3 pointToSphereCenter = pSphereCenter - pPoint;
+	// Scale the vector from the point to sphere center by the radius.
+	glm::dvec3 pointToSphereSurface = ((glm::length(pointToSphereCenter) - pSphereRadius) / glm::length(pointToSphereCenter)) *  pointToSphereCenter;
+	// Project the displacement onto the sphere
+	glm::dvec3 point = pPoint + pointToSphereSurface;
+
+	return point;
 }

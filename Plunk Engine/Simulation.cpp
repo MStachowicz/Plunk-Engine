@@ -34,7 +34,7 @@ void AddEntitiesToManager(EntityManager &entityManager)
 	/*for (int i = 0; i < 25; i++)
 	{
 		Entity entity("sphere");
-		entity.AddComponent(RigidBodySphere(glm::vec3(GenerateRandomNum(-8, 8), GenerateRandomNum(3, 10), GenerateRandomNum(-8, 8)), 0.5f));
+		entity.AddComponent(RigidBodySphere(glm::vec3(GenerateRandomNum(20, 20), GenerateRandomNum(5, 30), GenerateRandomNum(-8, 8)), 0.5f));
 		entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Sphere));
 		entity.AddComponent(ComponentModel(std::string("models/primitives/icosphere/icosphere4.obj"), true, false));
 		entity.AddComponent(ComponentRenderable());
@@ -43,22 +43,39 @@ void AddEntitiesToManager(EntityManager &entityManager)
 		entityManager.AddEntity(entity);
 	}*/
 
-	for (int i = 0; i < 1; i++)
+	for (int i = 1; i < 5; i++)
 	{
 		Entity entity("sphereBig");
-		RigidBodySphere body = RigidBodySphere(glm::vec3(0, 9.81f + 0.5f, 0), 0.5f);
-		body.mass = 1;
+		RigidBodySphere body = RigidBodySphere(glm::vec3(0, 4 * i, 0), 0.5f);
+		body.mass = 1000;
 		body.mApplyGravity = true;
 		//body.velocity = glm::vec3(1.f, 0.f, 0.f);
 
 		entity.AddComponent(body);
 		entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Sphere));
-		entity.AddComponent(ComponentModel(std::string("models/primitives/icosphere/icosphere5.obj"), true, false));
+		entity.AddComponent(ComponentModel(std::string("models/primitives/icosphere/icosphere4.obj"), true, false));
 		entity.AddComponent(ComponentRenderable());
 		glm::vec3 colour(GenerateRandomNum(0, 1), GenerateRandomNum(0, 1), GenerateRandomNum(0, 1));
 		entity.AddComponent(ComponentMaterial(colour, colour, glm::vec3(1.0), 64.0f));
 		entityManager.AddEntity(entity);
 	}
+
+	//for (int i = 0; i < 1; i++)
+	//{
+	//	Entity entity("spherefloor");
+	//	RigidBodySphere body = RigidBodySphere(glm::vec3(0, 1.5, 0), 0.5f);
+	//	body.mass = 1;
+	//	body.mApplyGravity = true;
+	//	//body.velocity = glm::vec3(1.f, 0.f, 0.f);
+
+	//	entity.AddComponent(body);
+	//	entity.AddComponent(ComponentCollision(ComponentCollision::collisionPrimitiveType::Sphere));
+	//	entity.AddComponent(ComponentModel(std::string("models/primitives/icosphere/icosphere7.obj"), true, false));
+	//	entity.AddComponent(ComponentRenderable());
+	//	glm::vec3 colour(GenerateRandomNum(0, 1), GenerateRandomNum(0, 1), GenerateRandomNum(0, 1));
+	//	entity.AddComponent(ComponentMaterial(colour, colour, glm::vec3(1.0), 64.0f));
+	//	entityManager.AddEntity(entity);
+	//}
 
 	for (int i = 0; i < 1; i++)
 	{
@@ -84,7 +101,7 @@ void AddEntitiesToManager(EntityManager &entityManager)
 	for (int i = 0; i < 1; i++)
 	{
 		Entity entity("plane");
-		RigidBodyPlane body = RigidBodyPlane(glm::vec3(0, 0, 0), glm::vec3(0.f));
+		RigidBodyPlane body = RigidBodyPlane(glm::vec3(1, 1, 1), glm::vec3(0.f));
 		body.mApplyGravity = false;
 		body.mass = 1000000000000.f;
 
