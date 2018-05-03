@@ -25,42 +25,39 @@ void SystemCollision::Tick(const std::shared_ptr<Entity>& entity)
 		std::shared_ptr<ComponentRigidBody> RigidBodyComponent = std::dynamic_pointer_cast<ComponentRigidBody> (entity->FindComponent(65536));
 		std::shared_ptr<ComponentCollision> collisionComp = std::dynamic_pointer_cast<ComponentCollision> (entity->FindComponent(32768));
 
-		for (unsigned int i = 0; i < mSimulationInstance->entityManager.entityList.size(); i++)
-		{
-			if ((mSimulationInstance->entityManager.entityList[i]->mask & MASK) == MASK) // if the entity is collidable 
-			{
-				if (entity != mSimulationInstance->entityManager.entityList[i]) // if it is not the same entity as currently being checked
-				{
-					// Retrieve all the components that will be checked against.
-					std::shared_ptr<ComponentRigidBody> RigidBodyComponent2 = std::dynamic_pointer_cast<ComponentRigidBody> (mSimulationInstance->entityManager.entityList[i]->FindComponent(65536));
-					std::shared_ptr<ComponentCollision> collisionComp2 = std::dynamic_pointer_cast<ComponentCollision> (mSimulationInstance->entityManager.entityList[i]->FindComponent(32768));
-
-					switch (collisionComp->type)
+		if (RigidBodyComponent->GetState() != RigidBodyState::SLEEPING) // Sleeping bodies do not move so dont check for collisions
+			for (unsigned int i = 0; i < mSimulationInstance->entityManager.entityList.size(); i++) // Checking all the other entities if: they have the collidable component, 
+				if ((mSimulationInstance->entityManager.entityList[i]->mask & MASK) == MASK) // Entity to collide with must have the collidable component.
+					if (entity != mSimulationInstance->entityManager.entityList[i]) // if it is not the same entity as currently being checked
 					{
-					case ComponentCollision::collisionPrimitiveType::Sphere:
+						// Retrieve all the components that will be checked against.
+						std::shared_ptr<ComponentRigidBody> RigidBodyComponent2 = std::dynamic_pointer_cast<ComponentRigidBody> (mSimulationInstance->entityManager.entityList[i]->FindComponent(65536));
+						std::shared_ptr<ComponentCollision> collisionComp2 = std::dynamic_pointer_cast<ComponentCollision> (mSimulationInstance->entityManager.entityList[i]->FindComponent(32768));
 
-						switch (collisionComp2->type)
+						switch (collisionComp->type)
 						{
 						case ComponentCollision::collisionPrimitiveType::Sphere:
-						{
-							// SPHERE V SPHERE CHECK
-							// --------------------------------------------------------------------------------------------------
-							CollisionSphereSphere(entity, mSimulationInstance->entityManager.entityList[i]);
+
+							switch (collisionComp2->type)
+							{
+							case ComponentCollision::collisionPrimitiveType::Sphere:
+							{
+								// SPHERE V SPHERE CHECK
+								// --------------------------------------------------------------------------------------------------
+								CollisionSphereSphere(entity, mSimulationInstance->entityManager.entityList[i]);
+								break;
+							}
+							case ComponentCollision::collisionPrimitiveType::Plane:
+							{
+								// SPHERE V PLANE CHECK
+								// --------------------------------------------------------------------------------------------------
+								CollisionSpherePlane(entity, mSimulationInstance->entityManager.entityList[i]);
+								break;
+							}
+							}
 							break;
 						}
-						case ComponentCollision::collisionPrimitiveType::Plane:
-						{
-							// SPHERE V PLANE CHECK
-							// --------------------------------------------------------------------------------------------------
-							CollisionSpherePlane(entity, mSimulationInstance->entityManager.entityList[i]);
-							break;
-						}
-						}
-						break;
 					}
-				}
-			}
-		}
 	}
 }
 
@@ -121,7 +118,7 @@ bool SystemCollision::CollisionSpherePlane(const std::shared_ptr<Entity> &pSpher
 	if (distance <= 0)
 	{
 		// If the velocity is below the threshold the sphere is put to sleep
-		if (glm::length(sphereRigidBody->previousVelocity) < 0.01)
+		if (glm::length(sphereRigidBody->velocity) < 0.08)
 		{
 			sphereRigidBody->ChangeState(RigidBodyState::SLEEPING);
 			return false;
